@@ -1,0 +1,946 @@
+/* ============================================================
+   خَيال · الملف 08 · التخطيط والتنقّل
+   الأجزاء: 24 (تنقّل) · 25 (تبويبات موسّعة) · 26 (استجابة)
+   يُكمّل .k-tabs في الملف 03 ولا يكرّره
+   ============================================================ */
+
+
+/* ═══════════════════════════════════════════════════════════
+   الجزء 24 · طبقة التنقّل
+   الشريط العلوي · القائمة السفلية · الانتقالات بين الشاشات
+   ═══════════════════════════════════════════════════════════ */
+
+/* ---- الحاوية الجذرية للتطبيق ---- */
+.k-app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--k-paper);
+}
+
+/* منطقة المحتوى القابلة للتمرير */
+.k-app__viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* الشاشة الفردية (كل مسار يحقن شاشة داخل الحاوية) */
+.k-screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: var(--k-paper);
+  will-change: transform;
+  animation: k-screen-in var(--k-dur-slow) var(--k-ease-emphasis);
+}
+@keyframes k-screen-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.k-screen[data-state="exiting"] {
+  animation: k-screen-out var(--k-dur-base) var(--k-ease-accelerate) forwards;
+  pointer-events: none;
+}
+@keyframes k-screen-out {
+  to { opacity: 0; transform: translateY(-4px); }
+}
+.k-screen[data-transition="push"] {
+  animation: k-push-in var(--k-dur-slow) var(--k-ease-emphasis);
+}
+@keyframes k-push-in {
+  from { opacity: 0; transform: translateX(-12%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.k-screen[data-transition="pop"] {
+  animation: k-pop-in var(--k-dur-slow) var(--k-ease-emphasis);
+}
+@keyframes k-pop-in {
+  from { opacity: 0; transform: translateX(12%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* المحتوى داخل الشاشة يحتاج مساحة للشريط السفلي */
+.k-screen__content {
+  padding-block-end: var(--k-tabbar-h-safe);
+}
+.k-screen[data-has-tabbar="false"] .k-screen__content {
+  padding-block-end: 0;
+}
+
+/* ---- الشريط العلوي (App Bar) ---- */
+.k-appbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--k-z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-3);
+  height: var(--k-header-h);
+  padding-inline: var(--k-space-4);
+  padding-block-start: env(safe-area-inset-top, 0px);
+  background: color-mix(in srgb, var(--k-paper) 90%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-block-end: 1px solid var(--k-border-subtle);
+  transition:
+    background var(--k-dur-base) var(--k-ease-standard),
+    border-color var(--k-dur-base) var(--k-ease-standard);
+}
+.k-appbar[data-elevated="true"] {
+  background: color-mix(in srgb, var(--k-paper) 96%, transparent);
+  border-block-end-color: var(--k-border);
+}
+.k-appbar[data-transparent="true"] {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-block-end-color: transparent;
+}
+
+.k-appbar__start,
+.k-appbar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-2);
+  flex-shrink: 0;
+}
+.k-appbar__center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+}
+.k-appbar__title {
+  font-family: var(--k-font-display);
+  font-size: var(--k-fs-lg);
+  font-weight: var(--k-fw-semibold);
+  letter-spacing: var(--k-ls-tight);
+  color: var(--k-text-primary);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.k-appbar__subtitle {
+  font-size: var(--k-fs-xs);
+  color: var(--k-text-tertiary);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* أزرار الشريط العلوي (موحّدة) */
+.k-appbar__action {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--k-radius-full);
+  background: transparent;
+  color: var(--k-text-primary);
+  cursor: pointer;
+  position: relative;
+  transition:
+    background var(--k-dur-fast) var(--k-ease-standard),
+    transform var(--k-dur-instant) var(--k-ease-standard);
+}
+.k-appbar__action:hover {
+  background: var(--k-ink-100);
+}
+[data-theme="dark"] .k-appbar__action:hover {
+  background: var(--k-ink-800);
+}
+.k-appbar__action:active {
+  transform: scale(0.92);
+}
+.k-appbar__action:focus-visible {
+  outline: none;
+  box-shadow: var(--k-focus-ring);
+}
+.k-appbar__action svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.75;
+}
+
+/* شعار داخل الشريط */
+.k-appbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--k-space-2);
+  font-family: var(--k-font-display);
+  font-size: var(--k-fs-lg);
+  font-weight: var(--k-fw-bold);
+  letter-spacing: var(--k-ls-tight);
+  color: var(--k-text-primary);
+  cursor: pointer;
+}
+.k-appbar__brand svg,
+.k-appbar__brand img {
+  width: 26px;
+  height: 26px;
+  color: var(--k-brand-500);
+}
+
+/* الشريط العلوي للتبويبات (بديل العنوان) */
+.k-appbar--tabs .k-appbar__center {
+  flex-direction: row;
+  align-items: center;
+}
+.k-appbar--tabs .k-tabs {
+  flex: 1;
+  border-block-end: none;
+}
+
+/* ---- شريط تنقّل سفلي (Mobile Tab Bar) ---- */
+.k-tabbar {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: var(--k-z-sticky);
+  display: flex;
+  align-items: stretch;
+  height: var(--k-tabbar-h);
+  padding-block-end: env(safe-area-inset-bottom, 0px);
+  background: color-mix(in srgb, var(--k-surface) 92%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-block-start: 1px solid var(--k-border-subtle);
+  transition: transform var(--k-dur-base) var(--k-ease-standard);
+}
+/* يختفي عند التمرير للأسفل (JS يضبط الحالة) */
+.k-tabbar[data-hidden="true"] {
+  transform: translateY(100%);
+}
+
+.k-tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: var(--k-space-2) var(--k-space-1);
+  min-height: 48px;
+  background: transparent;
+  color: var(--k-text-tertiary);
+  cursor: pointer;
+  position: relative;
+  transition:
+    color var(--k-dur-fast) var(--k-ease-standard),
+    transform var(--k-dur-instant) var(--k-ease-standard);
+}
+.k-tabbar__item:hover {
+  color: var(--k-text-secondary);
+}
+.k-tabbar__item:active {
+  transform: scale(0.94);
+}
+.k-tabbar__item[data-active="true"] {
+  color: var(--k-brand-600);
+}
+[data-theme="dark"] .k-tabbar__item[data-active="true"] {
+  color: var(--k-brand-300);
+}
+
+.k-tabbar__item svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.75;
+  transition:
+    transform var(--k-dur-base) var(--k-ease-spring),
+    fill var(--k-dur-fast) var(--k-ease-standard);
+}
+.k-tabbar__item[data-active="true"] svg {
+  fill: color-mix(in srgb, currentColor 14%, transparent);
+  transform: translateY(-1px);
+}
+.k-tabbar__label {
+  font-family: var(--k-font-display);
+  font-size: 10px;
+  font-weight: var(--k-fw-medium);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.k-tabbar__item[data-active="true"] .k-tabbar__label {
+  font-weight: var(--k-fw-semibold);
+}
+
+/* مؤشر النشاط */
+.k-tabbar__item::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  width: 24px;
+  height: 3px;
+  margin-inline-start: -12px;
+  border-radius: 0 0 var(--k-radius-full) var(--k-radius-full);
+  background: var(--k-brand-500);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity var(--k-dur-base) var(--k-ease-standard),
+    transform var(--k-dur-base) var(--k-ease-spring);
+}
+.k-tabbar__item[data-active="true"]::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* شارة عدّاد على عنصر */
+.k-tabbar__badge {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 50%;
+  margin-inline-end: -20px;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 4px;
+  border-radius: var(--k-radius-full);
+  background: var(--k-error-500);
+  color: #ffffff;
+  font-family: var(--k-font-mono);
+  font-size: 9px;
+  font-weight: var(--k-fw-bold);
+  line-height: 16px;
+  text-align: center;
+  border: 2px solid var(--k-surface);
+  font-variant-numeric: tabular-nums;
+}
+/* نقطة فقط (بدون رقم) */
+.k-tabbar__badge--dot {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  font-size: 0;
+  inset-block-start: 8px;
+}
+
+/* زر مركزي مميز (اختياري · للنشر السريع) */
+.k-tabbar__item--accent {
+  color: #ffffff;
+}
+.k-tabbar__item--accent .k-tabbar__icon-wrap {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--k-radius-full);
+  background: linear-gradient(135deg, var(--k-brand-500), var(--k-brand-700));
+  box-shadow:
+    0 6px 16px color-mix(in srgb, var(--k-brand-500) 40%, transparent),
+    0 2px 4px rgba(0, 0, 0, 0.10);
+  margin-block-start: -14px;
+  transition: transform var(--k-dur-base) var(--k-ease-spring);
+}
+.k-tabbar__item--accent:hover .k-tabbar__icon-wrap {
+  transform: translateY(-2px) scale(1.04);
+}
+.k-tabbar__item--accent:active .k-tabbar__icon-wrap {
+  transform: translateY(0) scale(0.94);
+}
+.k-tabbar__item--accent .k-tabbar__label {
+  margin-block-start: -6px;
+  color: var(--k-brand-600);
+}
+[data-theme="dark"] .k-tabbar__item--accent .k-tabbar__label {
+  color: var(--k-brand-300);
+}
+.k-tabbar__item--accent::before { display: none; }
+
+/* ---- بديل سطح المكتب: شريط جانبي ---- */
+.k-sidenav {
+  display: none;
+  flex-direction: column;
+  gap: var(--k-space-1);
+  width: 240px;
+  flex-shrink: 0;
+  padding: var(--k-space-4) var(--k-space-3);
+  padding-block-start: calc(var(--k-space-4) + env(safe-area-inset-top, 0px));
+  background: var(--k-surface);
+  border-inline-start: 1px solid var(--k-border-subtle);
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (min-width: 1024px) {
+  .k-sidenav { display: flex; }
+}
+
+.k-sidenav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-2);
+  padding: var(--k-space-2) var(--k-space-3) var(--k-space-5);
+  font-family: var(--k-font-display);
+  font-size: var(--k-fs-xl);
+  font-weight: var(--k-fw-bold);
+  letter-spacing: var(--k-ls-tight);
+  color: var(--k-text-primary);
+}
+.k-sidenav__brand svg,
+.k-sidenav__brand img {
+  width: 30px;
+  height: 30px;
+  color: var(--k-brand-500);
+}
+
+.k-sidenav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-3);
+  padding: var(--k-space-3);
+  border-radius: var(--k-radius-lg);
+  background: transparent;
+  color: var(--k-text-secondary);
+  font-family: var(--k-font-display);
+  font-size: var(--k-fs-sm);
+  font-weight: var(--k-fw-medium);
+  cursor: pointer;
+  text-align: start;
+  transition:
+    background var(--k-dur-fast) var(--k-ease-standard),
+    color var(--k-dur-fast) var(--k-ease-standard);
+}
+.k-sidenav__item:hover {
+  background: var(--k-ink-50);
+  color: var(--k-text-primary);
+}
+[data-theme="dark"] .k-sidenav__item:hover {
+  background: var(--k-ink-800);
+}
+.k-sidenav__item[data-active="true"] {
+  background: var(--k-brand-50);
+  color: var(--k-brand-700);
+  font-weight: var(--k-fw-semibold);
+}
+[data-theme="dark"] .k-sidenav__item[data-active="true"] {
+  background: rgba(91, 76, 230, 0.15);
+  color: var(--k-brand-200);
+}
+.k-sidenav__item svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.75;
+  flex-shrink: 0;
+}
+.k-sidenav__item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.k-sidenav__item-badge {
+  flex-shrink: 0;
+}
+
+/* زر رئيسي داخل الشريط الجانبي */
+.k-sidenav__cta {
+  margin: var(--k-space-4) 0;
+}
+
+/* ---- التخطيط العام: sidenav + viewport ---- */
+.k-app__layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.k-app__layout-main {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* عندما يظهر sidenav · نخفي tabbar */
+@media (min-width: 1024px) {
+  .k-tabbar { display: none; }
+  .k-screen__content { padding-block-end: 0; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   الجزء 25 · طبقة التبويبات الموسّعة
+   لوحات المحتوى · مؤشر متحرك · مزامنة مع المسار
+   (.k-tabs الأساسي موجود في الملف 03)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ---- لوحة المحتوى ---- */
+.k-tabpanel {
+  outline: none;
+}
+.k-tabpanel[hidden] {
+  display: none;
+}
+.k-tabpanel[data-state="entering"] {
+  animation: k-panel-in var(--k-dur-base) var(--k-ease-decelerate);
+}
+.k-tabpanel[data-state="exiting"] {
+  animation: k-panel-out var(--k-dur-fast) var(--k-ease-accelerate) forwards;
+}
+@keyframes k-panel-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes k-panel-out {
+  to { opacity: 0; transform: translateY(-2px); }
+}
+
+/* ---- مؤشر متحرك للتبويبات ---- */
+.k-tabs[data-indicator="true"] {
+  position: relative;
+}
+.k-tabs[data-indicator="true"] .k-tab::after {
+  display: none;
+}
+.k-tabs__indicator {
+  position: absolute;
+  inset-block-end: 0;
+  height: 2px;
+  background: var(--k-brand-500);
+  border-radius: var(--k-radius-full);
+  pointer-events: none;
+  transition:
+    transform var(--k-dur-slow) var(--k-ease-emphasis),
+    width var(--k-dur-slow) var(--k-ease-emphasis);
+  will-change: transform, width;
+}
+
+/* ---- شريط تبويبات قابل للتمرير بمؤشرات جانبية ---- */
+.k-tabstrip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-block-end: 1px solid var(--k-border-subtle);
+}
+.k-tabstrip__scroll {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+}
+.k-tabstrip__scroll::-webkit-scrollbar { display: none; }
+.k-tabstrip__scroll .k-tab {
+  scroll-snap-align: center;
+}
+
+.k-tabstrip__nav {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--k-radius-full);
+  background: var(--k-surface);
+  border: 1px solid var(--k-border-subtle);
+  color: var(--k-text-secondary);
+  cursor: pointer;
+  box-shadow: var(--k-shadow-sm);
+  transition:
+    opacity var(--k-dur-fast) var(--k-ease-standard),
+    transform var(--k-dur-fast) var(--k-ease-standard);
+}
+.k-tabstrip__nav[disabled] {
+  opacity: 0;
+  pointer-events: none;
+}
+.k-tabstrip__nav:hover:not([disabled]) {
+  transform: scale(1.06);
+  color: var(--k-text-primary);
+}
+.k-tabstrip__nav:active:not([disabled]) {
+  transform: scale(0.94);
+}
+.k-tabstrip__nav svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+[dir="rtl"] .k-tabstrip__nav svg { transform: scaleX(-1); }
+
+/* ---- تدرّج تلاشي عند طرفي الشريط ---- */
+.k-tabstrip::before,
+.k-tabstrip::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 32px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity var(--k-dur-base) var(--k-ease-standard);
+}
+.k-tabstrip::before {
+  inset-inline-start: 0;
+  background: linear-gradient(to end, var(--k-paper), transparent);
+}
+.k-tabstrip::after {
+  inset-inline-end: 0;
+  background: linear-gradient(to start, var(--k-paper), transparent);
+}
+.k-tabstrip[data-overflow-start="true"]::before { opacity: 1; }
+.k-tabstrip[data-overflow-end="true"]::after { opacity: 1; }
+
+/* ---- تبويبات مكافئة العرض (لتقسيمات قصيرة) ---- */
+.k-tabs--stretch .k-tab {
+  flex: 1;
+}
+
+/* ---- تبويبات مع أيقونة ---- */
+.k-tab--with-icon {
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--k-space-3) var(--k-space-3);
+  font-size: var(--k-fs-xs);
+  min-height: 60px;
+}
+.k-tab--with-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+.k-tab--with-icon.k-tab--with-count .k-tab__count {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   الجزء 26 · طبقة الترتيب والاستجابة
+   شبكات · safe areas · منطق التخطيط المتجاوب
+   ============================================================ */
+
+/* ---- شبكات عامة قابلة لإعادة الاستخدام ---- */
+.k-grid {
+  display: grid;
+  gap: var(--k-space-4);
+}
+.k-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.k-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.k-grid--auto-fill-sm {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+.k-grid--auto-fill-md {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.k-grid--auto-fill-lg {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.k-grid--bento {
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(120px, auto);
+  gap: var(--k-space-4);
+}
+.k-grid--bento > [data-span="2"] { grid-column: span 2; }
+.k-grid--bento > [data-span="3"] { grid-column: span 3; }
+.k-grid--bento > [data-span="4"] { grid-column: span 4; }
+.k-grid--bento > [data-span="6"] { grid-column: span 6; }
+.k-grid--bento > [data-row="2"] { grid-row: span 2; }
+
+/* ---- تخطيطات الصفحة الكبرى ---- */
+.k-layout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-6);
+  padding: var(--k-space-6) var(--k-space-4);
+}
+@media (min-width: 768px) {
+  .k-layout { padding-inline: var(--k-space-6); }
+}
+@media (min-width: 1024px) {
+  .k-layout {
+    max-width: var(--k-container-xl);
+    margin-inline: auto;
+    padding-inline: var(--k-space-8);
+  }
+}
+
+.k-layout--2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--k-space-6);
+}
+@media (min-width: 900px) {
+  .k-layout--2col {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+}
+.k-layout--2col-flip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--k-space-6);
+}
+@media (min-width: 900px) {
+  .k-layout--2col-flip {
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ---- أدوات العرض/الإخفاء المتجاوبة ---- */
+.k-hide-mobile { display: none; }
+@media (min-width: 768px) {
+  .k-hide-mobile { display: initial; }
+}
+.k-only-mobile { display: initial; }
+@media (min-width: 768px) {
+  .k-only-mobile { display: none; }
+}
+.k-hide-desktop { display: initial; }
+@media (min-width: 1024px) {
+  .k-hide-desktop { display: none; }
+}
+.k-only-desktop { display: none; }
+@media (min-width: 1024px) {
+  .k-only-desktop { display: initial; }
+}
+.k-only-md-up { display: none; }
+@media (min-width: 768px) {
+  .k-only-md-up { display: initial; }
+}
+.k-only-lg-up { display: none; }
+@media (min-width: 1024px) {
+  .k-only-lg-up { display: initial; }
+}
+
+/* ---- مساحات آمنة ---- */
+.k-safe-top {
+  padding-block-start: env(safe-area-inset-top, 0px);
+}
+.k-safe-bottom {
+  padding-block-end: env(safe-area-inset-bottom, 0px);
+}
+.k-safe-inline {
+  padding-inline-start: env(safe-area-inset-left, 0px);
+  padding-inline-end: env(safe-area-inset-right, 0px);
+}
+/* مساحة محجوزة للشريط السفلي في عناصر عائمة */
+.k-above-tabbar {
+  inset-block-end: calc(var(--k-tabbar-h-safe) + var(--k-space-4));
+}
+.k-below-appbar {
+  inset-block-start: calc(var(--k-header-h) + env(safe-area-inset-top, 0px) + var(--k-space-4));
+}
+
+/* ---- ترتيب (layout order) متجاوب ---- */
+.k-order-1 { order: 1; }
+.k-order-2 { order: 2; }
+.k-order-3 { order: 3; }
+.k-order-4 { order: 4; }
+@media (min-width: 900px) {
+  .k-md-order-1 { order: 1; }
+  .k-md-order-2 { order: 2; }
+  .k-md-order-3 { order: 3; }
+  .k-md-order-4 { order: 4; }
+}
+
+/* ---- حاويات نصية ملائمة للقراءة ---- */
+.k-prose {
+  max-width: 68ch;
+  font-size: var(--k-fs-md);
+  line-height: var(--k-lh-relaxed);
+  color: var(--k-text-secondary);
+}
+.k-prose > * + * {
+  margin-block-start: var(--k-space-4);
+}
+.k-prose h2,
+.k-prose h3 {
+  color: var(--k-text-primary);
+  margin-block-start: var(--k-space-6);
+}
+.k-prose a {
+  color: var(--k-brand-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.k-prose code {
+  font-family: var(--k-font-mono);
+  font-size: 0.9em;
+  padding: 1px 6px;
+  border-radius: var(--k-radius-xs);
+  background: var(--k-surface-sunken);
+  color: var(--k-text-primary);
+}
+.k-prose blockquote {
+  border-inline-start: 3px solid var(--k-brand-300);
+  padding-inline-start: var(--k-space-4);
+  color: var(--k-text-secondary);
+  font-style: italic;
+}
+
+/* ---- شبكة Bento تُعيد الطرح على الجوال ---- */
+@media (max-width: 640px) {
+  .k-grid--bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .k-grid--bento > [data-span] {
+    grid-column: span 2 !important;
+  }
+  .k-grid--bento > [data-row="2"] {
+    grid-row: auto !important;
+  }
+}
+
+/* ---- أدوات مساعدة للفراغ ---- */
+.k-spacer-2  { height: var(--k-space-2); }
+.k-spacer-3  { height: var(--k-space-3); }
+.k-spacer-4  { height: var(--k-space-4); }
+.k-spacer-6  { height: var(--k-space-6); }
+.k-spacer-8  { height: var(--k-space-8); }
+.k-spacer-12 { height: var(--k-space-12); }
+
+/* ---- مركز بسيط ---- */
+.k-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.k-center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---- ضغط عالٍ للشاشات العريضة جداً ---- */
+@media (min-width: 1600px) {
+  .k-layout--2col {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: var(--k-space-8);
+  }
+  .k-layout {
+    max-width: var(--k-container-2xl);
+  }
+}
+
+/* ---- وضع أفقي للهواتف (ارتفاع منخفض) ---- */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --k-header-h: 48px;
+    --k-tabbar-h: 52px;
+  }
+  .k-tabbar__label { display: none; }
+  .k-tabbar__item { min-height: 44px; }
+  .k-tabbar__item svg { width: 24px; height: 24px; }
+}
+
+/* ---- الطباعة ---- */
+@media print {
+  .k-appbar,
+  .k-tabbar,
+  .k-sidenav,
+  .k-toaster,
+  .k-detail__action-bar,
+  .k-scroll-top {
+    display: none !important;
+  }
+  .k-screen {
+    position: static;
+    overflow: visible;
+    animation: none;
+  }
+  body {
+    overflow: visible;
+    background: #ffffff;
+    color: #000000;
+  }
+  a { color: #000000; text-decoration: underline; }
+}
+
+/* ---- تفعيل GPU فقط عند الحاجة ---- */
+.k-screen[data-animating="true"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.k-scroll-snap-x {
+  scroll-snap-type: x mandatory;
+}
+.k-scroll-snap-y {
+  scroll-snap-type: y proximity;
+}
+.k-scroll-snap-item {
+  scroll-snap-align: start;
+}
+
+/* ---- قمع تأثيرات على الأجهزة الضعيفة (يُفعّله Performance Shield) ---- */
+[data-perf="low"] .k-tabbar,
+[data-perf="low"] .k-appbar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--k-surface) !important;
+}
+[data-perf="low"] .k-tabbar__item--accent .k-tabbar__icon-wrap {
+  box-shadow: none;
+}
+[data-perf="low"] .k-sidenav__item[data-active="true"] {
+  background: var(--k-ink-100);
+}
+[data-perf="low"] .k-screen,
+[data-perf="low"] .k-screen[data-transition="push"],
+[data-perf="low"] .k-screen[data-transition="pop"] {
+  animation-duration: 0ms !important;
+}
+[data-perf="low"] .k-tabs__indicator {
+  transition-duration: 0ms !important;
+}
+
+[data-perf="medium"] .k-appbar,
+[data-perf="medium"] .k-tabbar {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   تقليل الحركة
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .k-screen,
+  .k-screen[data-transition="push"],
+  .k-screen[data-transition="pop"],
+  .k-screen[data-state="exiting"] {
+    animation: none;
+  }
+  .k-tabpanel[data-state="entering"],
+  .k-tabpanel[data-state="exiting"] {
+    animation: none;
+  }
+  .k-tabs__indicator {
+    transition-duration: 0ms;
+  }
+  .k-tabbar {
+    transition-duration: 0ms;
+  }
+  .k-tabbar__item:active { transform: none; }
+  .k-tabbar__item svg { transition-duration: 0ms; }
+  .k-tabbar__item--accent:hover .k-tabbar__icon-wrap,
+  .k-tabbar__item--accent:active .k-tabbar__icon-wrap { transform: none; }
+  .k-appbar__action:active { transform: none; }
+  .k-tabstrip__scroll { scroll-behavior: auto; }
+}
