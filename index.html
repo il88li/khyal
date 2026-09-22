@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1, shrink-to-fit=no">
+
+  <title>خَيال · منصة برومبتات الصور العربية</title>
+  <meta name="description" content="المنصة العربية لتوثيق واكتشاف برومبتات الصور المُنشأة بالذكاء الاصطناعي.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#5b4ce6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0d10" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="خَيال">
+  <link rel="apple-touch-icon" href="/assets/icons/pwa/icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-mark.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/pwa/icon-192.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="خَيال">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:title" content="خَيال · منصة برومبتات الصور العربية">
+  <meta property="og:description" content="وثّق برومبتاتك، استكشف إبداعات الآخرين، وابنِ مكتبتك الشخصية.">
+  <meta property="og:image" content="/assets/img/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="/api" crossorigin>
+
+  <!-- Preload خطوط حرجة -->
+  <link rel="preload" href="/assets/fonts/IBMPlexSansArabic-Variable.woff2"
+        as="font" type="font/woff2" crossorigin="anonymous">
+
+  <!-- أنماط -->
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
+  <link rel="stylesheet" href="/styles/app.css">
+
+  <!-- CSP مشدّد — يُخفَّف عند الحاجة عبر الـ host -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 img-src 'self' data: blob: https:;
+                 media-src 'self' blob: https:;
+                 font-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 connect-src 'self' wss: https:;
+                 frame-ancestors 'none';
+                 base-uri 'self';
+                 form-action 'self';
+                 object-src 'none'">
+
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+
+  <a href="#khayal-viewport" class="k-skip-link">تخطَّ إلى المحتوى</a>
+
+  <!-- نقطة التركيب: يبنيها 10-app.js -->
+  <div id="khayal-root" data-app="khayal" data-version="1.0.0"></div>
+
+  <!-- شريط حالة الشبكة — يُبنى ديناميكياً في 08-session.js -->
+
+  <noscript>
+    <div class="k-empty" role="alert" style="position:fixed;inset:0;background:var(--k-paper);z-index:99999;display:flex;">
+      <div class="k-empty__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4M12 16h.01"/>
+        </svg>
+      </div>
+      <h2 class="k-empty__title">يحتاج خَيال إلى تفعيل JavaScript</h2>
+      <p class="k-empty__message">فعّل JavaScript في متصفحك ثم أعد تحميل الصفحة.</p>
+    </div>
+  </noscript>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       السكربتات — الترتيب صارم · لا تُقدّم ولا تؤخّر
+       ═══════════════════════════════════════════════════════════ -->
+
+  <!-- 01 · النواة — أولاً دائماً -->
+  <script src="/js/01-core.js" defer></script>
+
+  <!-- 02 · الأداء — يضبط data-perf قبل كل شيء آخر -->
+  <script src="/js/02-perf.js" defer></script>
+
+  <!-- 03 · الحالة والمظهر والصوت والإشعارات -->
+  <script src="/js/03-store.js" defer></script>
+
+  <!-- 04 · طبقة API الأساسية -->
+  <script src="/js/04-api.js" defer></script>
+
+  <!-- 05 · إدارة المحتوى -->
+  <script src="/js/05-content.js" defer></script>
+
+  <!-- 06 · التفاعل -->
+  <script src="/js/06-interactions.js" defer></script>
+
+  <!-- 07 · الاجتماعي (إشعارات + رسائل + WebSocket/SSE) -->
+  <script src="/js/07-social.js" defer></script>
+
+  <!-- 08 · الجلسة والشبكة و PWA -->
+  <script src="/js/08-session.js" defer></script>
+
+  <!-- 09 · النوافذ والدرج والمنبثقات -->
+  <script src="/js/09-overlays.js" defer></script>
+
+  <!-- 10 · التمهيد — أخيراً دائماً -->
+  <script src="/js/10-app.js" defer></script>
+
+</body>
+</html>
