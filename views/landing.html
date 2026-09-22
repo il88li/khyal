@@ -1,0 +1,351 @@
+<!-- ============================================================
+     خَيال · قالب الصفحة الترحيبية
+     الجزء 14 · يُحمَّل عند زيارة غير المسجّلين
+     JavaScript يستدعيه: K.getTemplate('landing', 'landing-screen')
+     ============================================================ -->
+
+<template id="landing-screen">
+  <div class="k-landing" dir="rtl">
+
+    <!-- ═══ الشريط العلوي ═══ -->
+    <header class="k-landing__topbar">
+      <a class="k-landing__brand" href="#/" aria-label="خَيال · الصفحة الرئيسية">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 3 7l9 5 9-5-9-5Z"/>
+          <path d="M3 12l9 5 9-5"/>
+          <path d="M3 17l9 5 9-5"/>
+        </svg>
+        <span>خَيال</span>
+      </a>
+      <div class="k-landing__topbar-spacer"></div>
+      <div class="k-landing__topbar-actions">
+        <button class="k-btn k-btn--sm k-btn--ghost" type="button" data-action="login">
+          دخول
+        </button>
+        <button class="k-btn k-btn--sm k-btn--primary" type="button" data-action="signup">
+          إنشاء حساب
+        </button>
+      </div>
+    </header>
+
+    <!-- ═══ قسم البطل ═══ -->
+    <section class="k-hero" aria-labelledby="hero-title">
+      <div class="k-hero__inner">
+
+        <!-- العمود النصي -->
+        <div class="k-hero__copy">
+          <span class="k-hero__eyebrow">
+            <span class="k-hero__eyebrow-dot" aria-hidden="true"></span>
+            <span>المنصة العربية لبرومبتات الصور</span>
+          </span>
+
+          <h1 id="hero-title" class="k-hero__title">
+            اكتب الوصف.<br>
+            شارك النتيجة.<br>
+            ألهم <em>العالم العربي</em>.
+          </h1>
+
+          <p class="k-hero__lead">
+            خَيال مساحة يجتمع فيها المبدعون العرب لتوثيق أفضل برومبتاتهم،
+            واستكشاف ما ينشره الآخرون، وبناء مكتبة شخصية من الأفكار التي تلهمهم.
+          </p>
+
+          <div class="k-hero__cta">
+            <button class="k-btn k-btn--lg k-btn--primary" type="button" data-action="signup">
+              <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              <span>ابدأ الآن مجاناً</span>
+            </button>
+            <button class="k-btn k-btn--lg k-btn--ghost" type="button" data-action="browse">
+              <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="m10 8 6 4-6 4V8Z"/>
+              </svg>
+              <span>تصفّح الأعمال</span>
+            </button>
+          </div>
+
+          <p class="k-hero__meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m5 12 5 5L20 7"/>
+            </svg>
+            <span>مجاني بالكامل · لا نطلب بطاقة ائتمانية</span>
+          </p>
+
+          <!-- مؤشرات الثقة -->
+          <div class="k-hero__trust">
+            <div class="k-hero__trust-item">
+              <span class="k-hero__trust-value" data-trust-value="posts" data-trust-count="12400">٠</span>
+              <span class="k-hero__trust-label">برومبت منشور</span>
+            </div>
+            <div class="k-hero__trust-divider" aria-hidden="true"></div>
+            <div class="k-hero__trust-item">
+              <span class="k-hero__trust-value" data-trust-value="creators" data-trust-count="3800">٠</span>
+              <span class="k-hero__trust-label">مبدع عربي</span>
+            </div>
+            <div class="k-hero__trust-divider" aria-hidden="true"></div>
+            <div class="k-hero__trust-item">
+              <span class="k-hero__trust-value" data-trust-value="copies" data-trust-count="96000">٠</span>
+              <span class="k-hero__trust-label">مرة نُسخ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- العمود البصري (Z-axis cascade) -->
+        <div class="k-hero__visual" aria-hidden="true">
+          <div class="k-hero__card--shadow"></div>
+
+          <div class="k-hero__card k-hero__card--mid">
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#786cef,#3a309e);width:100%;height:100%;"></div>
+          </div>
+
+          <div class="k-hero__card k-hero__card--back">
+            <div style="aspect-ratio:4/5;background:linear-gradient(135deg,#ea8a5c,#9d4e31);width:100%;height:100%;"></div>
+          </div>
+
+          <div class="k-hero__card k-hero__card--front">
+            <div style="aspect-ratio:4/5;background:linear-gradient(135deg,#1f1e24,#56515f);width:100%;height:100%;"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ قسم القيم — Bento غير متماثل ═══ -->
+    <section class="k-section k-section--sunken" aria-labelledby="values-title">
+      <div class="k-section__inner">
+        <div class="k-section__head">
+          <div class="k-section__title-group">
+            <span class="k-section__eyebrow">لماذا خَيال</span>
+            <h2 id="values-title" class="k-section__title">
+              مساحة صُنعت للمبدع العربي
+            </h2>
+            <p class="k-section__lead">
+              ليست شبكة صور أخرى. خَيال يحتفظ بالبرومبت خلف كل صورة،
+              ليتعلّم المبتدئ من المحترف، ويوثّق المحترف عمله.
+            </p>
+          </div>
+        </div>
+
+        <div class="k-values">
+          <article class="k-value-card k-value-card--accent">
+            <span class="k-value-card__icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
+                <circle cx="12" cy="12" r="4"/>
+                <path d="m18.5 5.5-1.5 1.5M7 17l-1.5 1.5M17 17l1.5 1.5M5.5 5.5 7 7"/>
+              </svg>
+            </span>
+            <h3 class="k-value-card__title">البرومبت هو الأصل، الصورة نتيجته</h3>
+            <p class="k-value-card__text">
+              كل منشور يحمل الوصف الكامل بجانب الصورة. لا تخمين، ولا «كيف صنعت هذا؟» بلا جواب.
+              انسخ البرومبت بضغطة واحدة، وأعد إنتاجه بأداتك المفضّلة.
+            </p>
+          </article>
+
+          <article class="k-value-card">
+            <span class="k-value-card__icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h18v13H3z"/>
+                <path d="M8 7V4h8v3"/>
+                <path d="M3 12h18"/>
+              </svg>
+            </span>
+            <h3 class="k-value-card__title">مكتبتك الشخصية</h3>
+            <p class="k-value-card__text">
+              احفظ ما يلهمك، نظّمه في مجلدات، وعُد إليه وقت الحاجة.
+            </p>
+          </article>
+
+          <article class="k-value-card">
+            <span class="k-value-card__icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </span>
+            <h3 class="k-value-card__title">مصدر موثوق</h3>
+            <p class="k-value-card__text">
+              كل منشور يحمل الموديل المُستخدَم والوسوم، لا صور مجهولة المصدر.
+            </p>
+          </article>
+
+          <article class="k-value-card">
+            <span class="k-value-card__icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="8" r="3"/>
+                <circle cx="17" cy="10" r="2.5"/>
+                <path d="M3 20c0-3 3-5 6-5s6 2 6 5"/>
+                <path d="M15 20c0-2 2-3.5 4-3.5s3 1.5 3 3.5"/>
+              </svg>
+            </span>
+            <h3 class="k-value-card__title">مجتمع يتعلّم من بعضه</h3>
+            <p class="k-value-card__text">
+              علّق، اسأل، شارك تجربتك. كل تفاعل يثري من يأتي بعدك ويبني سمعتك كمبدع.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ قسم الخطوات ═══ -->
+    <section class="k-section k-section--paper" aria-labelledby="steps-title">
+      <div class="k-section__inner">
+        <div class="k-section__head">
+          <div class="k-section__title-group">
+            <span class="k-section__eyebrow">ثلاث خطوات</span>
+            <h2 id="steps-title" class="k-section__title">كيف تبدأ</h2>
+            <p class="k-section__lead">
+              أنشئ حسابك، وابدأ بمشاركة أول برومبت أو تصفّح ما ينشره الآخرون.
+            </p>
+          </div>
+        </div>
+
+        <div class="k-steps">
+          <article class="k-step">
+            <span class="k-step__num" aria-hidden="true"></span>
+            <h3 class="k-step__title">أنشئ حسابك</h3>
+            <p class="k-step__text">
+              اسم معرّف وصورة. ثوانٍ معدودة وتبدأ.
+            </p>
+          </article>
+
+          <article class="k-step">
+            <span class="k-step__num" aria-hidden="true"></span>
+            <h3 class="k-step__title">انشر أو استكشف</h3>
+            <p class="k-step__text">
+              شارك برومبتاً مع نتيجته، أو تصفّح ما ينشره المجتمع.
+            </p>
+          </article>
+
+          <article class="k-step">
+            <span class="k-step__num" aria-hidden="true"></span>
+            <h3 class="k-step__title">احفظ وابنِ مكتبتك</h3>
+            <p class="k-step__text">
+              ما يعجبك يبقى في متناولك، جاهزاً للنسخ متى احتجت.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ معاينة المجتمع ═══ -->
+    <section class="k-section k-section--sunken" aria-labelledby="community-title">
+      <div class="k-section__inner">
+        <div class="k-section__head">
+          <div class="k-section__title-group">
+            <span class="k-section__eyebrow">من داخل خَيال</span>
+            <h2 id="community-title" class="k-section__title">أعمال تنبض بالحياة</h2>
+            <p class="k-section__lead">
+              لمحة سريعة مما ينشره المبدعون اليوم.
+            </p>
+          </div>
+          <button class="k-btn k-btn--md k-btn--secondary" type="button" data-action="browse">
+            <span>عرض المزيد</span>
+            <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="k-community" role="list">
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23786cef'/%3E%3Cstop offset='1' stop-color='%231a1543'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='500'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="500">
+            <span class="k-community__tile-meta">@noor · Midjourney</span>
+          </a>
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ea8a5c'/%3E%3Cstop offset='1' stop-color='%239d4e31'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="400">
+            <span class="k-community__tile-meta">@salma · DALL·E 3</span>
+          </a>
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231e9166'/%3E%3Cstop offset='1' stop-color='%23106244'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="400">
+            <span class="k-community__tile-meta">@kareem · Flux</span>
+          </a>
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23d97706'/%3E%3Cstop offset='1' stop-color='%23924f04'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="400">
+            <span class="k-community__tile-meta">@lina · Stable Diffusion</span>
+          </a>
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b6ff5'/%3E%3Cstop offset='1' stop-color='%232449a8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="400">
+            <span class="k-community__tile-meta">@yousef · Firefly</span>
+          </a>
+          <a class="k-community__tile" href="#/explore" role="listitem" aria-label="عمل من المجتمع">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23dc3e3e'/%3E%3Cstop offset='1' stop-color='%23972828'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3C/svg%3E" alt="" loading="lazy" width="400" height="400">
+            <span class="k-community__tile-meta">@hala · Leonardo</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ دعوة نهائية ═══ -->
+    <section class="k-section k-section--paper">
+      <div class="k-section__inner">
+        <div class="k-final-cta">
+          <div class="k-final-cta__inner">
+            <h2 class="k-final-cta__title">
+              جاهز لتصنع بصمتك؟
+            </h2>
+            <p class="k-final-cta__lead">
+              انضم إلى آلاف المبدعين العرب الذين يوثّقون أعمالهم ويستلهمون من بعضهم.
+            </p>
+            <div class="k-final-cta__actions">
+              <button class="k-btn k-btn--lg k-btn--primary" type="button" data-action="signup">
+                <span>إنشاء حساب مجاني</span>
+              </button>
+              <button class="k-btn k-btn--lg k-btn--ghost" type="button" data-action="browse">
+                <span>تصفّح أولاً</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ التذييل ═══ -->
+    <footer class="k-footer">
+      <div class="k-footer__inner">
+        <div class="k-footer__brand">
+          <span class="k-footer__logo">
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="28" height="28" fill="none" stroke="var(--k-brand-500)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 3 7l9 5 9-5-9-5Z"/>
+              <path d="M3 12l9 5 9-5"/>
+              <path d="M3 17l9 5 9-5"/>
+            </svg>
+            <span>خَيال</span>
+          </span>
+          <p class="k-footer__tagline">
+            المنصة العربية لتوثيق واكتشاف برومبتات الصور المُنشأة بالذكاء الاصطناعي.
+          </p>
+        </div>
+
+        <nav class="k-footer__col" aria-label="المنتج">
+          <h3 class="k-footer__col-title">المنتج</h3>
+          <a class="k-footer__link" href="#/explore">استكشاف</a>
+          <a class="k-footer__link" href="#/search">بحث</a>
+          <a class="k-footer__link" href="#/signup">إنشاء حساب</a>
+        </nav>
+
+        <nav class="k-footer__col" aria-label="المجتمع">
+          <h3 class="k-footer__col-title">المجتمع</h3>
+          <a class="k-footer__link" href="#/about">عن خَيال</a>
+          <a class="k-footer__link" href="#/guidelines">إرشادات النشر</a>
+          <a class="k-footer__link" href="#/creators">للمبدعين</a>
+        </nav>
+
+        <nav class="k-footer__col" aria-label="الدعم">
+          <h3 class="k-footer__col-title">الدعم</h3>
+          <a class="k-footer__link" href="#/help">مركز المساعدة</a>
+          <a class="k-footer__link" href="#/privacy">الخصوصية</a>
+          <a class="k-footer__link" href="#/terms">الشروط</a>
+        </nav>
+      </div>
+
+      <div class="k-footer__bottom">
+        <span>© ٢٠٢٦ خَيال · جميع الحقوق محفوظة</span>
+        <span>صُنع بحُب للمبدعين العرب</span>
+      </div>
+    </footer>
+
+  </div>
+</template>
