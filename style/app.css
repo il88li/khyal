@@ -1,0 +1,14 @@
+/* ============================================================
+   خَيال · مستورد الأنماط الموحّد
+   تُحمَّل مرة واحدة في index.html
+   الترتيب مهم: الأسس → الذرات → الطبقات → البطاقات → الشاشات → التخطيط
+   ============================================================ */
+
+@import url("./01-foundations.css");
+@import url("./02-atoms.css");
+@import url("./03-overlays.css");
+@import url("./04-cards.css");
+@import url("./05-screens-a.css");
+@import url("./06-screens-b.css");
+@import url("./07-screens-c.css");
+@import url("./08-layout.css");
