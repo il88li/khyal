@@ -1,0 +1,222 @@
+<!-- ============================================================
+     خَيال · قالب تفاصيل المنشور
+     الشاشة الأغنى في المنصة · يحتوي على كل عنصر مرة واحدة
+     ============================================================ -->
+
+<template id="screen-post-detail">
+  <div class="k-detail">
+
+    <!-- الشريط العلوي الديناميكي -->
+    <header class="k-detail__topbar" data-scrolled="false">
+      <button class="k-detail__back" type="button" aria-label="رجوع" data-action="back">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+      <h1 class="k-detail__topbar-title" data-slot="topbar-title"></h1>
+      <button class="k-detail__menu" type="button" aria-label="خيارات" data-action="menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- منطقة الصورة -->
+    <div class="k-detail__media" data-slot="media">
+      <img
+        class="k-detail__image"
+        data-slot="image"
+        alt=""
+        loading="eager"
+      >
+      <div class="k-detail__media-overlay">
+        <div class="k-post__model" data-slot="model" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span data-slot="model-name"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- جسم التفاصيل -->
+    <div class="k-detail__body">
+
+      <!-- العنوان -->
+      <h1 class="k-detail__title" data-slot="title"></h1>
+
+      <!-- الميتا (تاريخ · موديل · مشاهدات) -->
+      <div class="k-detail__meta" data-slot="meta"></div>
+
+      <!-- بطاقة المؤلف -->
+      <div class="k-detail__author" data-slot="author-card">
+        <span class="k-avatar k-avatar--md" data-slot="author-avatar">
+          <span class="k-avatar__fallback">؟</span>
+        </span>
+        <div class="k-detail__author-info">
+          <div class="k-detail__author-name" data-slot="author-name"></div>
+          <div class="k-detail__author-handle" data-slot="author-handle"></div>
+        </div>
+        <div class="k-detail__author-action" data-slot="author-action"></div>
+      </div>
+
+      <!-- قسم البرومبت -->
+      <div class="k-prompt-block" data-slot="prompt-block">
+        <div class="k-prompt-block__head">
+          <div class="k-prompt-block__label">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>
+            </svg>
+            <span>البرومبت الكامل</span>
+          </div>
+          <button class="k-btn k-btn--sm k-btn--secondary" type="button" data-action="copy-prompt">
+            <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="10" height="10" rx="2"/>
+              <path d="M5 15V5h10"/>
+            </svg>
+            <span>نسخ</span>
+          </button>
+        </div>
+        <code class="k-prompt-block__code" data-slot="prompt" dir="ltr"></code>
+      </div>
+
+      <!-- الوسوم -->
+      <div class="k-detail__tags" data-slot="tags"></div>
+
+      <!-- الإحصائيات -->
+      <div class="k-detail__stats" data-slot="stats">
+        <div class="k-detail__stat" data-stat="likes">
+          <div class="k-detail__stat-value" data-slot="stat-likes">٠</div>
+          <div class="k-detail__stat-label">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7-4.35-7-10a4.5 4.5 0 0 1 8-2.83A4.5 4.5 0 0 1 19 11c0 5.65-7 10-7 10Z"/>
+            </svg>
+            <span>إعجاب</span>
+          </div>
+        </div>
+
+        <div class="k-detail__stat" data-stat="saves">
+          <div class="k-detail__stat-value" data-slot="stat-saves">٠</div>
+          <div class="k-detail__stat-label">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 4h12v16l-6-4-6 4V4Z"/>
+            </svg>
+            <span>حفظ</span>
+          </div>
+        </div>
+
+        <div class="k-detail__stat" data-stat="copies">
+          <div class="k-detail__stat-value" data-slot="stat-copies">٠</div>
+          <div class="k-detail__stat-label">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="10" height="10" rx="2"/>
+              <path d="M5 15V5h10"/>
+            </svg>
+            <span>نسخ</span>
+          </div>
+        </div>
+
+        <div class="k-detail__stat" data-stat="comments">
+          <div class="k-detail__stat-value" data-slot="stat-comments">٠</div>
+          <div class="k-detail__stat-label">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
+            </svg>
+            <span>تعليق</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- شريط الإجراءات العائم -->
+      <div class="k-detail__action-bar" role="toolbar" aria-label="إجراءات المنشور">
+
+        <button class="k-detail__action" type="button" data-action="like" data-liked="false" aria-label="إعجاب">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s-7-4.35-7-10a4.5 4.5 0 0 1 8-2.83A4.5 4.5 0 0 1 19 11c0 5.65-7 10-7 10Z"/>
+          </svg>
+          <span>إعجاب</span>
+        </button>
+
+        <button class="k-detail__action" type="button" data-action="save" data-saved="false" aria-label="حفظ">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 4h12v16l-6-4-6 4V4Z"/>
+          </svg>
+          <span>حفظ</span>
+        </button>
+
+        <button class="k-detail__action k-detail__action--primary" type="button" data-action="share" aria-label="مشاركة">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <path d="m8.59 13.51 6.83 3.98M15.41 6.51 8.59 10.49"/>
+          </svg>
+          <span>شارك</span>
+        </button>
+
+      </div>
+
+      <!-- قسم التعليقات -->
+      <section class="k-detail__comments" id="comments" aria-labelledby="comments-title">
+
+        <header class="k-detail__comments-head">
+          <h2 class="k-detail__comments-title" id="comments-title">
+            التعليقات
+            <span class="k-detail__comments-count" data-slot="comments-count">٠</span>
+          </h2>
+          <button class="k-detail__comments-sort" type="button" data-action="sort-comments">
+            <span>الأحدث</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="k-detail__comments-list" data-slot="comments-list" aria-live="polite">
+          <!-- تعليقات -->
+        </div>
+
+        <div class="k-comment-composer">
+          <span class="k-avatar k-avatar--sm" data-slot="my-avatar">
+            <span class="k-avatar__fallback">خ</span>
+          </span>
+          <textarea
+            class="k-comment-composer__field"
+            placeholder="أضف تعليقاً…"
+            rows="1"
+            aria-label="نص التعليق"
+            data-slot="comment-input"
+          ></textarea>
+          <button class="k-comment-composer__send" type="button" aria-label="إرسال" disabled data-action="send-comment">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/>
+            </svg>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- المنشورات ذات الصلة -->
+      <section class="k-related" aria-labelledby="related-title">
+        <header class="k-related__head">
+          <h2 class="k-related__title" id="related-title">قد يعجبك أيضاً</h2>
+          <button class="k-related__more" type="button" data-action="more-related">
+            <span>المزيد</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="k-related__grid" data-slot="related">
+          <!-- بطاقات مصغّرة -->
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</template>
