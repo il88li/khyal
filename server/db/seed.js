@@ -202,4 +202,41 @@ async function seed() {
   );
   const msgs = [
     [me.id, 'أهلاً سلمى، أعجبني آخر منشور لك!'],
-    [peer.id, 'شكراً نور
+    [peer.id, 'شكراً نور، سعيد أنه أعجبك 🙏'],
+    [me.id, 'كيف حصلت على ذلك التدرج اللوني؟'],
+    [peer.id, 'استخدمت Flux مع برومبت طويل جداً'],
+  ];
+  for (const [sender, text] of msgs) {
+    await pool.query(`
+      INSERT INTO messages (conversation_id, sender_id, text)
+      VALUES ($1, $2, $3)
+    `, [conv[0].id, sender, text]);
+  }
+  console.info(`  ✓ محادثة اختبارية`);
+
+  // 10) إشعارات اختبارية
+  await pool.query(`
+    INSERT INTO notifications (user_id, type, actor_id, target_type, target_id, target_thumb, text, unread, created_at)
+    SELECT $1, 'like', $2, 'post', p.id, p.cover, '', TRUE, NOW() - INTERVAL '10 minutes'
+    FROM posts p LIMIT 3
+  `, [me.id, peer.id]);
+  await pool.query(`
+    INSERT INTO notifications (user_id, type, actor_id, target_type, target_id, text, unread, created_at)
+    VALUES ($1, 'follow', $2, 'user', $2, '', TRUE, NOW() - INTERVAL '2 hours')
+  `, [me.id, users[2].id]);
+
+  console.info('✅ اكتمل');
+  console.info('');
+  console.info('حسابات للدخول:');
+  console.info('  البريد:    noor@khayal.test');
+  console.info('  كلمة السر: password123');
+  console.info('');
+  console.info('كل الحسابات تستخدم نفس كلمة السر.');
+
+  await pool.end();
+}
+
+seed().catch(err => {
+  console.error('❌ فشل:', err);
+  process.exit(1);
+});
