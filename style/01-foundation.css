@@ -1,0 +1,503 @@
+/* ============================================================
+   خَيال · الجزء 01 · الأسس المشتركة
+   الملف المرجعي الوحيد لكل قيمة ولكل قاعدة أساسية في المنصة
+   يُحمَّل في كل صفحة · لا متغيّر خارجه · لا قاعدة مكرّرة بعده
+   ============================================================ */
+
+
+/* ═══════════════════════════════════════════════════════════
+   الجزء 01 · المتغيّرات
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- محايد دافئ (بلمسة بنفسجية خفيفة) ---- */
+  --k-ink-950: #0e0d10;
+  --k-ink-900: #17161a;
+  --k-ink-800: #26242b;
+  --k-ink-700: #3a3742;
+  --k-ink-600: #56515f;
+  --k-ink-500: #7a7485;
+  --k-ink-400: #a09aa9;
+  --k-ink-300: #c4bfca;
+  --k-ink-200: #ddd9e0;
+  --k-ink-100: #eeecef;
+  --k-ink-50:  #f6f4f6;
+
+  /* ---- العلامة · بنفسج الخيال ---- */
+  --k-brand-50:  #efeefd;
+  --k-brand-100: #dddafb;
+  --k-brand-200: #bab5f7;
+  --k-brand-300: #9790f3;
+  --k-brand-400: #786cef;
+  --k-brand-500: #5b4ce6;
+  --k-brand-600: #4a3ec9;
+  --k-brand-700: #3a309e;
+  --k-brand-800: #2a2271;
+  --k-brand-900: #1a1543;
+
+  /* ---- الثانوية · تيراكوتا عربية ---- */
+  --k-clay-50:  #fdf0ea;
+  --k-clay-100: #fbe0d2;
+  --k-clay-200: #f6c0a5;
+  --k-clay-300: #f0a078;
+  --k-clay-400: #ea8a5c;
+  --k-clay-500: #e07856;
+  --k-clay-600: #c4633f;
+  --k-clay-700: #9d4e31;
+
+  /* ---- الدلالات ---- */
+  --k-success-50:  #e6f6ee;
+  --k-success-500: #1e9166;
+  --k-success-700: #106244;
+
+  --k-warning-50:  #fdf3e3;
+  --k-warning-500: #d97706;
+  --k-warning-700: #924f04;
+
+  --k-error-50:  #fdecec;
+  --k-error-500: #dc3e3e;
+  --k-error-700: #972828;
+
+  --k-info-50:  #e8effd;
+  --k-info-500: #3b6ff5;
+  --k-info-700: #2449a8;
+
+  /* ---- الأسطح ---- */
+  --k-paper:            #faf8f4;
+  --k-surface:          #ffffff;
+  --k-surface-raised:   #ffffff;
+  --k-surface-sunken:   #f2efe9;
+  --k-surface-overlay:  rgba(23, 22, 26, 0.55);
+
+  /* ---- الحدود ---- */
+  --k-border-subtle: #ebe7e0;
+  --k-border:        #ddd7cd;
+  --k-border-strong: #bcb5a8;
+
+  /* ---- النصّ ---- */
+  --k-text-primary:   var(--k-ink-900);
+  --k-text-secondary: var(--k-ink-600);
+  --k-text-tertiary:  var(--k-ink-500);
+  --k-text-disabled:  var(--k-ink-400);
+  --k-text-inverse:   #ffffff;
+  --k-text-link:      var(--k-brand-600);
+
+  /* ---- حلقات التركيز ---- */
+  --k-focus-ring:       0 0 0 3px rgba(91, 76, 230, 0.28);
+  --k-focus-ring-error: 0 0 0 3px rgba(220, 62, 62, 0.28);
+
+  /* ---- عائلات الخطوط ---- */
+  --k-font-display: "IBM Plex Sans Arabic", "Noto Kufi Arabic", system-ui, sans-serif;
+  --k-font-body:    "IBM Plex Sans Arabic", "Noto Sans Arabic", system-ui, sans-serif;
+  --k-font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  /* ---- المقاسات النصّية ---- */
+  --k-fs-3xs: 11px;
+  --k-fs-2xs: 12px;
+  --k-fs-xs:  13px;
+  --k-fs-sm:  14px;
+  --k-fs-md:  16px;
+  --k-fs-lg:  18px;
+  --k-fs-xl:  20px;
+  --k-fs-2xl: 24px;
+  --k-fs-3xl: 30px;
+  --k-fs-4xl: 36px;
+  --k-fs-5xl: 48px;
+  --k-fs-6xl: 60px;
+  --k-fs-7xl: 76px;
+
+  /* ---- الأوزان ---- */
+  --k-fw-light:    300;
+  --k-fw-regular:  400;
+  --k-fw-medium:   500;
+  --k-fw-semibold: 600;
+  --k-fw-bold:     700;
+
+  /* ---- ارتفاعات الأسطر ---- */
+  --k-lh-tight:   1.15;
+  --k-lh-snug:    1.30;
+  --k-lh-normal:  1.55;
+  --k-lh-relaxed: 1.75;
+
+  /* ---- تباعد الأحرف ---- */
+  --k-ls-tight:  -0.02em;
+  --k-ls-normal:  0;
+  --k-ls-wide:    0.04em;
+
+  /* ---- المسافات (مقياس 4) ---- */
+  --k-space-0:  0;
+  --k-space-1:  4px;
+  --k-space-2:  8px;
+  --k-space-3:  12px;
+  --k-space-4:  16px;
+  --k-space-5:  20px;
+  --k-space-6:  24px;
+  --k-space-8:  32px;
+  --k-space-10: 40px;
+  --k-space-12: 48px;
+  --k-space-16: 64px;
+  --k-space-20: 80px;
+  --k-space-24: 96px;
+  --k-space-32: 128px;
+
+  /* ---- الاستدارة ---- */
+  --k-radius-xs:   4px;
+  --k-radius-sm:   8px;
+  --k-radius-md:   12px;
+  --k-radius-lg:   16px;
+  --k-radius-xl:   20px;
+  --k-radius-2xl:  24px;
+  --k-radius-3xl:  32px;
+  --k-radius-full: 999px;
+
+  /* ---- الظلال (بنية دافئة · لا أسود نقي في الوضع الفاتح) ---- */
+  --k-shadow-xs:  0 1px 2px rgba(23, 22, 26, 0.06);
+  --k-shadow-sm:  0 2px 4px rgba(23, 22, 26, 0.06), 0 1px 2px rgba(23, 22, 26, 0.04);
+  --k-shadow-md:  0 6px 12px rgba(23, 22, 26, 0.08), 0 2px 4px rgba(23, 22, 26, 0.05);
+  --k-shadow-lg:  0 16px 32px rgba(23, 22, 26, 0.10), 0 4px 8px rgba(23, 22, 26, 0.06);
+  --k-shadow-xl:  0 24px 48px rgba(23, 22, 26, 0.14), 0 8px 16px rgba(23, 22, 26, 0.08);
+
+  /* ---- الحركة ---- */
+  --k-dur-instant: 80ms;
+  --k-dur-fast:    140ms;
+  --k-dur-base:    220ms;
+  --k-dur-slow:    320ms;
+  --k-dur-slower:  480ms;
+  --k-dur-slowest: 720ms;
+
+  --k-ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+  --k-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --k-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --k-ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --k-ease-emphasis:   cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- طبقات الترتيب ---- */
+  --k-z-base:     0;
+  --k-z-raised:   10;
+  --k-z-sticky:   100;
+  --k-z-dropdown: 200;
+  --k-z-overlay:  300;
+  --k-z-modal:    400;
+  --k-z-toast:    500;
+  --k-z-tooltip:  600;
+
+  /* ---- أهداف اللمس ---- */
+  --k-touch-ios:     44px;
+  --k-touch-android: 48px;
+  --k-touch-min:     44px;
+
+  /* ---- الحاويات ---- */
+  --k-container-sm:  640px;
+  --k-container-md:  768px;
+  --k-container-lg:  1024px;
+  --k-container-xl:  1280px;
+  --k-container-2xl: 1440px;
+
+  /* ---- الأشرطة الثابتة ---- */
+  --k-header-h:      56px;
+  --k-tabbar-h:      64px;
+  --k-tabbar-h-safe: calc(var(--k-tabbar-h) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---- الوضع الداكن ---- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --k-paper:           #0e0d10;
+  --k-surface:         #17161a;
+  --k-surface-raised:  #1f1e24;
+  --k-surface-sunken:  #0a090c;
+  --k-surface-overlay: rgba(0, 0, 0, 0.72);
+
+  --k-border-subtle: #26242b;
+  --k-border:        #34313a;
+  --k-border-strong: #4a4653;
+
+  --k-text-primary:   #f6f4f6;
+  --k-text-secondary: #b6b2bd;
+  --k-text-tertiary:  #8b8694;
+  --k-text-disabled:  #56515f;
+  --k-text-inverse:   #17161a;
+  --k-text-link:      #b9b1f7;
+
+  --k-focus-ring: 0 0 0 3px rgba(150, 138, 243, 0.35);
+
+  --k-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --k-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.40);
+  --k-shadow-md: 0 6px 12px rgba(0, 0, 0, 0.50);
+  --k-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.55);
+  --k-shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.60);
+}
+
+/* ---- تقليل الحركة (تفضيل النظام) ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --k-dur-instant: 0ms;
+    --k-dur-fast:    0ms;
+    --k-dur-base:    0ms;
+    --k-dur-slow:    0ms;
+    --k-dur-slower:  0ms;
+    --k-dur-slowest: 0ms;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   الجزء 02 · القواعد الأساسية
+   إعادة تعيين + نصوص + تركيز + وصولية + حركات مشتركة
+   ═══════════════════════════════════════════════════════════ */
+
+/* ---- إعادة تعيين شاملة ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  vertical-align: baseline;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-feature-settings: "kern", "liga";
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--k-paper);
+  color: var(--k-text-primary);
+  font-family: var(--k-font-body);
+  font-size: var(--k-fs-md);
+  font-weight: var(--k-fw-regular);
+  line-height: var(--k-lh-normal);
+  letter-spacing: var(--k-ls-normal);
+  direction: rtl;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: default;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* ---- العناوين ---- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--k-font-display);
+  font-weight: var(--k-fw-semibold);
+  line-height: var(--k-lh-tight);
+  letter-spacing: var(--k-ls-tight);
+  color: var(--k-text-primary);
+  text-wrap: balance;
+}
+h1 { font-size: var(--k-fs-4xl); }
+h2 { font-size: var(--k-fs-3xl); }
+h3 { font-size: var(--k-fs-2xl); }
+h4 { font-size: var(--k-fs-xl); }
+h5 { font-size: var(--k-fs-lg); }
+h6 { font-size: var(--k-fs-md); }
+
+p {
+  color: var(--k-text-secondary);
+  line-height: var(--k-lh-normal);
+  text-wrap: pretty;
+}
+
+small { font-size: var(--k-fs-sm); color: var(--k-text-tertiary); }
+strong { font-weight: var(--k-fw-semibold); color: var(--k-text-primary); }
+
+/* ---- الروابط ---- */
+a {
+  color: var(--k-text-link);
+  text-decoration: none;
+  transition: color var(--k-dur-fast) var(--k-ease-standard);
+}
+a:hover { color: var(--k-brand-700); }
+[data-theme="dark"] a:hover { color: var(--k-brand-200); }
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--k-focus-ring);
+  border-radius: var(--k-radius-xs);
+}
+
+/* ---- القوائم ---- */
+ul, ol { list-style: none; }
+
+/* ---- الوسائط ---- */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+svg { fill: none; stroke: currentColor; }
+
+/* ---- النماذج ---- */
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+button { cursor: pointer; user-select: none; }
+button:disabled { cursor: not-allowed; }
+
+input, textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+textarea { resize: none; overflow: auto; }
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--k-text-tertiary);
+  opacity: 1;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--k-text-primary);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* ---- التركيز ---- */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--k-brand-500);
+  outline-offset: 2px;
+  border-radius: var(--k-radius-xs);
+}
+
+/* ---- التمرير ---- */
+:where(*) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--k-border-strong) transparent;
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--k-border-strong);
+  border-radius: var(--k-radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--k-ink-400);
+  background-clip: content-box;
+}
+
+/* ---- التحديد ---- */
+::selection {
+  background: var(--k-brand-200);
+  color: var(--k-brand-900);
+}
+[data-theme="dark"] ::selection {
+  background: var(--k-brand-800);
+  color: var(--k-brand-100);
+}
+
+/* ---- تعطيل سحب الصور ---- */
+img, a { -webkit-user-drag: none; user-drag: none; }
+
+/* ---- أدوات الوصولية ---- */
+.k-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.k-skip-link {
+  position: fixed;
+  inset-inline-start: var(--k-space-4);
+  inset-block-start: -100px;
+  padding: var(--k-space-2) var(--k-space-4);
+  background: var(--k-brand-500);
+  color: var(--k-text-inverse);
+  border-radius: var(--k-radius-sm);
+  z-index: var(--k-z-toast);
+  font-weight: var(--k-fw-medium);
+  transition: inset-block-start var(--k-dur-base) var(--k-ease-decelerate);
+}
+.k-skip-link:focus {
+  inset-block-start: var(--k-space-4);
+  color: var(--k-text-inverse);
+}
+
+/* ---- طبقة الخلفية المعتمة ---- */
+.k-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--k-surface-overlay);
+  z-index: var(--k-z-overlay);
+  animation: k-fade-in var(--k-dur-base) var(--k-ease-decelerate);
+}
+
+/* ---- حركات مشتركة (تُستهلك في كل الأجزاء اللاحقة) ---- */
+@keyframes k-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes k-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes k-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes k-slide-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes k-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes k-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes k-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes k-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+@keyframes k-slide-in-end {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes k-slide-in-start {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* ---- أدوات RTL ---- */
+[dir="rtl"] .k-flip-x { transform: scaleX(-1); }
+
+/* ---- الوضع الداكن · الصور ---- */
+[data-theme="dark"] img { opacity: 0.92; }
