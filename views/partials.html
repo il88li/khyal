@@ -1,0 +1,356 @@
+<!-- ============================================================
+     خَيال · القوالب الجزئية
+     تُحمَّل مع كل شاشة · معظمها يُبنى في JS لكن موجودة هنا كمرجع
+     ومعيار للبنية الدلالية وخصائص ARIA
+     ============================================================ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشريط العلوي العام (App Bar)
+     يُستخدم في: الرئيسية · الاستكشاف · البحث · الملف · الإعدادات
+     ═══════════════════════════════════════════════════════════ -->
+<template id="appbar-generic">
+  <header class="k-appbar" role="banner">
+    <div class="k-appbar__start">
+      <!-- اختياري: زر رجوع -->
+      <button class="k-appbar__action" type="button" data-slot="back" aria-label="رجوع" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="k-appbar__center">
+      <h1 class="k-appbar__title" data-slot="title"></h1>
+      <p class="k-appbar__subtitle" data-slot="subtitle" hidden></p>
+    </div>
+
+    <div class="k-appbar__end" data-slot="actions">
+      <!-- تُضاف الأزرار ديناميكياً -->
+    </div>
+  </header>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشريط العلوي مع تبويبات
+     يُستخدم في: الملف الشخصي · الإعدادات · الإشعارات
+     ═══════════════════════════════════════════════════════════ -->
+<template id="appbar-with-tabs">
+  <header class="k-appbar k-appbar--tabs" role="banner">
+    <div class="k-appbar__start">
+      <button class="k-appbar__action" type="button" data-slot="back" aria-label="رجوع">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="k-appbar__center">
+      <div class="k-tabs" role="tablist" data-slot="tabs">
+        <!-- التبويبات تُضاف ديناميكياً -->
+      </div>
+    </div>
+
+    <div class="k-appbar__end" data-slot="actions"></div>
+  </header>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     محتوى الدرج الجانبي (Drawer)
+     يُستخدم في: قائمة الحساب الجانبية · فلاتر البحث
+     ═══════════════════════════════════════════════════════════ -->
+<template id="drawer-content-main">
+  <div class="k-drawer__header">
+    <h2 class="k-drawer__title">القائمة</h2>
+    <button class="k-modal__close" type="button" aria-label="إغلاق">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="k-drawer__body">
+    <a class="k-drawer__item" href="#/home" data-active="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2V10Z"/>
+      </svg>
+      <span>الرئيسية</span>
+    </a>
+
+    <a class="k-drawer__item" href="#/explore">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="m15 9-2 6-4 1 2-6 4-1Z"/>
+      </svg>
+      <span>استكشاف</span>
+    </a>
+
+    <a class="k-drawer__item" href="#/likes">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7-4.35-7-10a4.5 4.5 0 0 1 8-2.83A4.5 4.5 0 0 1 19 11c0 5.65-7 10-7 10Z"/>
+      </svg>
+      <span>إعجاباتي</span>
+    </a>
+
+    <a class="k-drawer__item" href="#/saved">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 4h12v16l-6-4-6 4V4Z"/>
+      </svg>
+      <span>المحفوظات</span>
+    </a>
+
+    <div class="k-menu__separator" role="separator" style="margin:12px;"></div>
+
+    <a class="k-drawer__item" href="#/settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+      </svg>
+      <span>الإعدادات</span>
+    </a>
+
+    <a class="k-drawer__item" href="#/help">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <path d="M12 17h.01"/>
+      </svg>
+      <span>المساعدة</span>
+    </a>
+
+    <a class="k-drawer__item" href="#/about">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      <span>عن خَيال</span>
+    </a>
+  </div>
+
+  <div class="k-drawer__footer">
+    <button class="k-btn k-btn--md k-btn--ghost k-btn--block" type="button" data-action="logout">
+      <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <path d="m16 17 5-5-5-5M21 12H9"/>
+      </svg>
+      <span>تسجيل الخروج</span>
+    </button>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     نافذة تأكيد عامة
+     يُستخدم: قبل حذف · قبل حظر · قبل إجراء لا يمكن التراجع عنه
+     ═══════════════════════════════════════════════════════════ -->
+<template id="modal-confirm">
+  <div class="k-modal k-modal--sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="k-modal__grabber" aria-hidden="true"></div>
+
+    <div class="k-modal__header">
+      <div class="k-modal__title-group">
+        <h2 class="k-modal__title" id="confirm-title" data-slot="title">هل أنت متأكد؟</h2>
+        <p class="k-modal__subtitle" data-slot="subtitle" hidden></p>
+      </div>
+    </div>
+
+    <div class="k-modal__body">
+      <div class="k-confirm__icon k-confirm__icon--warning" data-slot="icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+          <path d="M12 9v4M12 17h.01"/>
+        </svg>
+      </div>
+
+      <p class="k-modal__message" data-slot="message"></p>
+    </div>
+
+    <div class="k-modal__footer">
+      <button class="k-btn k-btn--md k-btn--secondary" type="button" data-action="cancel">
+        إلغاء
+      </button>
+      <button class="k-btn k-btn--md k-btn--danger" type="button" data-action="confirm">
+        تأكيد
+      </button>
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     نافذة المشاركة
+     يُستخدم: من بطاقة منشور · من تفاصيل المنشور
+     ═══════════════════════════════════════════════════════════ -->
+<template id="modal-share">
+  <div class="k-modal k-modal--sm" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <div class="k-modal__grabber" aria-hidden="true"></div>
+
+    <div class="k-modal__header">
+      <div class="k-modal__title-group">
+        <h2 class="k-modal__title" id="share-title">شارك المنشور</h2>
+      </div>
+      <button class="k-modal__close" type="button" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="k-modal__body" style="padding-block:0 var(--k-space-4);">
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <button class="k-menu__item" type="button" data-action="copy-link" style="padding:14px 12px;">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span>نسخ الرابط</span>
+        </button>
+
+        <button class="k-menu__item" type="button" data-action="copy-prompt" style="padding:14px 12px;">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>
+          </svg>
+          <span>نسخ البرومبت</span>
+        </button>
+
+        <button class="k-menu__item" type="button" data-action="native" style="padding:14px 12px;">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <path d="m8.59 13.51 6.83 3.98M15.41 6.51 8.59 10.49"/>
+          </svg>
+          <span>مشاركة عبر…</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     نافذة البلاغ
+     يُستخدم: من قائمة إجراءات المنشور · من تفاصيل المنشور
+     ═══════════════════════════════════════════════════════════ -->
+<template id="modal-report">
+  <div class="k-modal k-modal--sm" role="dialog" aria-modal="true" aria-labelledby="report-title">
+    <div class="k-modal__grabber" aria-hidden="true"></div>
+
+    <div class="k-modal__header">
+      <div class="k-modal__title-group">
+        <h2 class="k-modal__title" id="report-title">إبلاغ عن المحتوى</h2>
+        <p class="k-modal__subtitle">سيراجع الفريق بلاغك خلال ٢٤ ساعة</p>
+      </div>
+      <button class="k-modal__close" type="button" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="k-modal__body">
+      <div role="radiogroup" aria-label="سبب الإبلاغ" style="display:flex;flex-direction:column;gap:6px;">
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">محتوى دعائي متكرر</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">تحرّش أو إساءة</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">خطاب كراهية</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">عنف أو تهديد</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">محتوى غير لائق</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">معلومات مضلّلة</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">انتهاك حقوق</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">انتحال شخصية</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+        <label class="k-option" role="radio" aria-checked="false">
+          <span class="k-option__title">سبب آخر</span>
+          <span class="k-option__check" aria-hidden="true"></span>
+        </label>
+      </div>
+
+      <div class="k-textarea" style="margin-top:var(--k-space-4);">
+        <textarea
+          class="k-textarea__field"
+          rows="3"
+          maxlength="500"
+          placeholder="تفاصيل إضافية (اختياري)"
+          style="min-height:72px;"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="k-modal__footer">
+      <button class="k-btn k-btn--md k-btn--secondary" type="button" data-action="cancel">
+        إلغاء
+      </button>
+      <button class="k-btn k-btn--md k-btn--danger" type="button" data-action="submit">
+        إرسال البلاغ
+      </button>
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     حالة فارغة عامة (نموذج للاستخدام البرمجي)
+     ═══════════════════════════════════════════════════════════ -->
+<template id="empty-state">
+  <div class="k-empty" role="status">
+    <div class="k-empty__icon" data-slot="icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
+      </svg>
+    </div>
+    <h2 class="k-empty__title" data-slot="title">لا يوجد شيء هنا</h2>
+    <p class="k-empty__message" data-slot="message" hidden></p>
+    <div class="k-empty__actions" data-slot="actions" hidden></div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     حالة خطأ (نموذج للاستخدام البرمجي)
+     ═══════════════════════════════════════════════════════════ -->
+<template id="error-state">
+  <div class="k-empty" role="alert">
+    <div class="k-empty__icon" style="background:var(--k-error-50);color:var(--k-error-500);">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+        <path d="M12 9v4M12 17h.01"/>
+      </svg>
+    </div>
+    <h2 class="k-empty__title">لم يكتمل التحميل</h2>
+    <p class="k-empty__message">تحقق من اتصالك وحاول مجدداً</p>
+    <div class="k-empty__actions">
+      <button class="k-btn k-btn--md k-btn--secondary" type="button" data-action="retry">
+        <svg class="k-btn__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-3-6.7L21 8"/>
+          <path d="M21 3v5h-5"/>
+        </svg>
+        <span>إعادة المحاولة</span>
+      </button>
+    </div>
+  </div>
+</template>
