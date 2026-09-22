@@ -1,0 +1,1195 @@
+<!-- ============================================================
+     خَيال · قوالب الشاشات الرئيسية
+     9 شاشات: الرئيسية · الاستكشاف · البحث · الإعجابات · المحفوظات
+     · الملف · الإعدادات · الرسائل · الإشعارات
+     كل قالب self-contained · يُحمَّل عبر K.getTemplate('main', 'screen-X')
+     ============================================================ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الرئيسية
+     feedKey: 'home' · sortbar + filterbar + quick composer
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-home">
+  <div class="k-home" data-feed="home">
+
+    <header class="k-home__header">
+      <h1 class="k-home__greeting" data-slot="greeting">
+        أهلاً بك في <em>خَيال</em>
+      </h1>
+      <p class="k-home__subline">أحدث ما نُشر من المبدعين العرب</p>
+    </header>
+
+    <button class="k-quick-composer" type="button" data-action="compose" aria-label="ابدأ بنشر برومبت جديد">
+      <span class="k-avatar k-avatar--sm" data-slot="my-avatar">
+        <span class="k-avatar__fallback">خ</span>
+      </span>
+      <span class="k-quick-composer__hint">شارك برومبتاً جديداً…</span>
+      <span class="k-quick-composer__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+      </span>
+    </button>
+
+    <div class="k-sortbar" role="tablist" aria-label="ترتيب">
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="true" data-sort="recent">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+        <span>الأحدث</span>
+      </button>
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="false" data-sort="trending">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3s4 4 4 8a4 4 0 0 1-8 0c0-2 1-3 1-5 2 1 3 3 3 5"/>
+        </svg>
+        <span>الأكثر رواجاً</span>
+      </button>
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="false" data-sort="top">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 9.5 8.5 3.5 9.5l4.5 4-1 6 5-3 5 3-1-6 4.5-4-6-1L12 3Z"/>
+        </svg>
+        <span>الأعلى تفاعلاً</span>
+      </button>
+
+      <span class="k-sortbar__divider" aria-hidden="true"></span>
+
+      <button class="k-sortbar__chip" type="button" data-filter="all" aria-selected="true">الكل</button>
+    </div>
+
+    <div class="k-filterbar" aria-label="فلاتر الوسوم">
+      <span class="k-filterbar__label">وسوم:</span>
+      <button class="k-tag" type="button" data-tag="portrait">#portrait</button>
+      <button class="k-tag" type="button" data-tag="landscape">#landscape</button>
+      <button class="k-tag" type="button" data-tag="fantasy">#fantasy</button>
+      <button class="k-tag" type="button" data-tag="scifi">#scifi</button>
+      <button class="k-tag" type="button" data-tag="anime">#anime</button>
+      <button class="k-tag" type="button" data-tag="architecture">#architecture</button>
+    </div>
+
+    <div class="k-feed" data-slot="feed" aria-live="polite">
+      <!-- بطاقات المنشورات تُضاف ديناميكياً -->
+    </div>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الاستكشاف
+     3 مجموعات: الأكثر رواجاً · مختارات المحرر · جديد اليوم
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-explore">
+  <div class="k-explore" data-feed="explore">
+
+    <header class="k-explore__header">
+      <h1 class="k-explore__title">استكشف</h1>
+      <p class="k-explore__subline">اكتشف إبداعات المجتمع بطرق جديدة</p>
+    </header>
+
+    <div class="k-explore__body">
+
+      <!-- مجموعة · الأكثر رواجاً -->
+      <section class="k-group" data-group="trending">
+        <div class="k-group__head">
+          <div class="k-group__title-wrap">
+            <span class="k-group__icon k-group__icon--fire" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3s4 4 4 8a4 4 0 0 1-8 0c0-2 1-3 1-5 2 1 3 3 3 5"/>
+              </svg>
+            </span>
+            <div class="k-group__meta">
+              <h2 class="k-group__title">الأكثر رواجاً</h2>
+              <span class="k-group__desc">ما يتفاعل معه المجتمع اليوم</span>
+            </div>
+          </div>
+          <button class="k-group__more" type="button" data-view-all="trending">
+            <span>المزيد</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="k-rail" data-slot="trending">
+          <!-- بطاقات أفقية -->
+        </div>
+      </section>
+
+      <!-- مجموعة · مختارات المحرر -->
+      <section class="k-group" data-group="editor">
+        <div class="k-group__head">
+          <div class="k-group__title-wrap">
+            <span class="k-group__icon k-group__icon--star" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3 9.5 8.5 3.5 9.5l4.5 4-1 6 5-3 5 3-1-6 4.5-4-6-1L12 3Z"/>
+              </svg>
+            </span>
+            <div class="k-group__meta">
+              <h2 class="k-group__title">مختارات المحرر</h2>
+              <span class="k-group__desc">انتقاء بعناية لهذا الأسبوع</span>
+            </div>
+          </div>
+          <button class="k-group__more" type="button" data-view-all="editor">
+            <span>المزيد</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="k-bento" data-slot="editor">
+          <!-- bento grid 4 tiles -->
+        </div>
+      </section>
+
+      <!-- مجموعة · جديد اليوم -->
+      <section class="k-group" data-group="new">
+        <div class="k-group__head">
+          <div class="k-group__title-wrap">
+            <span class="k-group__icon k-group__icon--clock" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+              </svg>
+            </span>
+            <div class="k-group__meta">
+              <h2 class="k-group__title">جديد اليوم</h2>
+              <span class="k-group__desc">أول ما نُشر منذ الفجر</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-grid-compact" data-slot="new">
+          <!-- 6-12 صورة مصغّرة -->
+        </div>
+      </section>
+
+      <!-- مجموعة · وسوم رائجة -->
+      <section class="k-group" data-group="tags">
+        <div class="k-group__head">
+          <div class="k-group__title-wrap">
+            <div class="k-group__meta">
+              <h2 class="k-group__title">وسوم رائجة</h2>
+              <span class="k-group__desc">ما يستكشفه الناس الآن</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-trending-tags" data-slot="tags">
+          <button class="k-tag" type="button">#fantasy <span class="k-tag__count">٢٤٠</span></button>
+          <button class="k-tag" type="button">#portrait <span class="k-tag__count">١٨٢</span></button>
+          <button class="k-tag" type="button">#scifi <span class="k-tag__count">١٤٥</span></button>
+          <button class="k-tag" type="button">#architecture <span class="k-tag__count">٩٨</span></button>
+          <button class="k-tag" type="button">#anime <span class="k-tag__count">٨٧</span></button>
+          <button class="k-tag" type="button">#landscape <span class="k-tag__count">٦٣</span></button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · البحث
+     شريط علوي + 4 تبويبات + نتائج مقسّمة
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-search">
+  <div class="k-search-screen">
+
+    <header class="k-search-screen__top">
+      <div class="k-search-screen__input-wrap">
+        <div class="k-searchbar" role="search">
+          <svg class="k-searchbar__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="search"
+            class="k-searchbar__field"
+            placeholder="ابحث عن برومبت أو مبدع أو وسم…"
+            autocomplete="off"
+            enterkeyhint="search"
+            aria-label="بحث"
+            data-slot="query"
+          >
+          <button class="k-searchbar__submit" type="button" aria-label="بحث" data-action="submit" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button class="k-search-screen__cancel" type="button" data-action="cancel">إلغاء</button>
+    </header>
+
+    <div class="k-search-screen__tabs">
+      <div class="k-tabs k-tabs--segmented" role="tablist" aria-label="نوع البحث">
+        <button class="k-tab" type="button" role="tab" aria-selected="true" data-type="all">الكل</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-type="posts">المنشورات</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-type="users">المبدعون</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-type="tags">الوسوم</button>
+      </div>
+    </div>
+
+    <div class="k-search-screen__body" data-slot="results" aria-live="polite">
+
+      <!-- الحالة الافتراضية: بلا بحث -->
+      <div class="k-search-suggest" data-state="idle">
+
+        <div class="k-search-suggest__group">
+          <h2 class="k-search-suggest__title">اقتراحات</h2>
+          <div class="k-search-suggest__list">
+            <button class="k-search-suggest__row" type="button" data-suggest="portrait">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+              </svg>
+              <span class="k-search-suggest__row-label">صور شخصية</span>
+            </button>
+            <button class="k-search-suggest__row" type="button" data-suggest="fantasy">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>
+              </svg>
+              <span class="k-search-suggest__row-label">عوالم فانتازية</span>
+            </button>
+            <button class="k-search-suggest__row" type="button" data-suggest="architecture">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/>
+              </svg>
+              <span class="k-search-suggest__row-label">معمار مستقبلي</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="k-search-history" data-slot="history" hidden>
+          <div class="k-search-history__head">
+            <h2 class="k-search-suggest__title">آخر ما بحثت عنه</h2>
+            <button class="k-search-history__clear" type="button" data-action="clear-history">مسح</button>
+          </div>
+          <div class="k-search-suggest__list" data-slot="history-list"></div>
+        </div>
+
+      </div>
+
+      <!-- نتائج مقسّمة -->
+      <div class="k-search-results" data-state="results" hidden>
+
+        <section class="k-result-section" data-result="users" hidden>
+          <div class="k-result-section__head">
+            <h2 class="k-result-section__title">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+              </svg>
+              <span>مبدعون</span>
+            </h2>
+            <span class="k-result-section__count" data-slot="users-count">٠</span>
+          </div>
+          <div class="k-result-users" data-slot="users-list"></div>
+        </section>
+
+        <section class="k-result-section" data-result="posts" hidden>
+          <div class="k-result-section__head">
+            <h2 class="k-result-section__title">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="m3 16 5-5 4 4 3-3 6 6"/>
+              </svg>
+              <span>منشورات</span>
+            </h2>
+            <span class="k-result-section__count" data-slot="posts-count">٠</span>
+          </div>
+          <div class="k-result-posts" data-slot="posts-list"></div>
+        </section>
+
+        <section class="k-result-section" data-result="tags" hidden>
+          <div class="k-result-section__head">
+            <h2 class="k-result-section__title">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41 12 22l-9-9V3h10l7.59 7.59a2 2 0 0 1 0 2.82Z"/>
+                <path d="M7 7h.01"/>
+              </svg>
+              <span>وسوم</span>
+            </h2>
+          </div>
+          <div class="k-result-tags" data-slot="tags-list"></div>
+        </section>
+
+      </div>
+
+      <!-- لا نتائج -->
+      <div class="k-empty" data-state="empty" hidden role="status">
+        <div class="k-empty__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <h2 class="k-empty__title">لا نتائج مطابقة</h2>
+        <p class="k-empty__message">جرّب كلمات أقل، أو ابحث عن وسم معروف</p>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الإعجابات
+     بنية موحّدة مع المحفوظات
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-likes">
+  <div class="k-collection" data-feed="likes">
+
+    <header class="k-collection__header">
+      <span class="k-collection__icon k-collection__icon--likes" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-7-4.35-7-10a4.5 4.5 0 0 1 8-2.83A4.5 4.5 0 0 1 19 11c0 5.65-7 10-7 10Z"/>
+        </svg>
+      </span>
+
+      <div class="k-collection__titles">
+        <h1 class="k-collection__title">إعجاباتي</h1>
+        <span class="k-collection__count" data-slot="count">٠ منشور</span>
+      </div>
+
+      <div class="k-collection__actions">
+        <button class="k-appbar__action" type="button" aria-label="ترتيب" data-action="sort">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M6 12h12M10 18h4"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="k-collection__toolbar" role="tablist" aria-label="ترتيب">
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="true" data-sort="recent">الأحدث</button>
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="false" data-sort="top">الأعلى</button>
+    </div>
+
+    <div class="k-collection__body" data-slot="feed" aria-live="polite">
+      <!-- بطاقات -->
+    </div>
+
+    <button class="k-scroll-top" type="button" aria-label="إلى الأعلى" data-action="scroll-top" data-visible="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · المحفوظات
+     بنية موحّدة + مجلدات
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-saved">
+  <div class="k-collection" data-feed="saved">
+
+    <header class="k-collection__header">
+      <span class="k-collection__icon k-collection__icon--saved" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 4h12v16l-6-4-6 4V4Z"/>
+        </svg>
+      </span>
+
+      <div class="k-collection__titles">
+        <h1 class="k-collection__title">المحفوظات</h1>
+        <span class="k-collection__count" data-slot="count">٠ منشور</span>
+      </div>
+
+      <div class="k-collection__actions">
+        <button class="k-appbar__action" type="button" aria-label="جديد" data-action="new-folder">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="k-saved-folders" role="tablist" aria-label="مجلدات">
+      <button class="k-folder-chip" type="button" role="tab" aria-selected="true" data-folder="all">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>
+        </svg>
+        <span>الكل</span>
+      </button>
+      <button class="k-folder-chip" type="button" role="tab" aria-selected="false" data-folder="inspiration">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
+          <circle cx="12" cy="12" r="4"/>
+        </svg>
+        <span>إلهام</span>
+      </button>
+      <button class="k-folder-chip" type="button" role="tab" aria-selected="false" data-folder="tutorials">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16M4 12h16M4 18h10"/>
+        </svg>
+        <span>تعليمي</span>
+      </button>
+      <button class="k-folder-chip" type="button" role="tab" aria-selected="false" data-folder="clients">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h18v13H3zM8 7V4h8v3"/>
+        </svg>
+        <span>مشاريع</span>
+      </button>
+    </div>
+
+    <div class="k-collection__body" data-slot="feed" aria-live="polite">
+      <!-- بطاقات -->
+    </div>
+
+    <button class="k-scroll-top" type="button" aria-label="إلى الأعلى" data-action="scroll-top" data-visible="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الملف الشخصي
+     غلاف + بطاقة تعريف + تبويبات + محتوى
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-profile">
+  <div class="k-profile" data-handle="" data-self="false">
+
+    <div class="k-profile__cover" data-slot="cover">
+      <div class="k-profile__cover-actions">
+        <button class="k-profile__cover-back" type="button" aria-label="رجوع" data-action="back">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </button>
+        <span class="k-profile__cover-spacer"></span>
+        <button class="k-profile__cover-menu" type="button" aria-label="خيارات" data-action="menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="k-profile__card">
+      <div class="k-profile__card-inner">
+
+        <div class="k-profile__identity">
+          <div class="k-profile__avatar" data-slot="avatar">
+            <span class="k-avatar__fallback">؟</span>
+          </div>
+
+          <div class="k-profile__names">
+            <h1 class="k-profile__display" data-slot="displayName"></h1>
+            <span class="k-profile__handle" data-slot="handle"></span>
+          </div>
+        </div>
+
+        <p class="k-profile__bio" data-slot="bio" hidden></p>
+
+        <div class="k-profile__facts" data-slot="facts" hidden></div>
+
+        <div class="k-profile__stats" data-slot="stats">
+          <button class="k-profile__stat" type="button" data-stat="posts">
+            <span class="k-profile__stat-value" data-slot="stat-posts">٠</span>
+            <span class="k-profile__stat-label">منشور</span>
+          </button>
+          <button class="k-profile__stat" type="button" data-stat="followers">
+            <span class="k-profile__stat-value" data-slot="stat-followers">٠</span>
+            <span class="k-profile__stat-label">متابع</span>
+          </button>
+          <button class="k-profile__stat" type="button" data-stat="following">
+            <span class="k-profile__stat-value" data-slot="stat-following">٠</span>
+            <span class="k-profile__stat-label">يتابع</span>
+          </button>
+          <button class="k-profile__stat" type="button" data-stat="likes">
+            <span class="k-profile__stat-value" data-slot="stat-likes">٠</span>
+            <span class="k-profile__stat-label">إعجاب</span>
+          </button>
+        </div>
+
+        <div class="k-profile__actions" data-slot="actions">
+          <!-- أزرار ديناميكية (متابعة / تحرير) -->
+        </div>
+
+      </div>
+    </div>
+
+    <div class="k-profile__tabs">
+      <div class="k-tabs" role="tablist" aria-label="أقسام الملف">
+        <button class="k-tab" type="button" role="tab" aria-selected="true" data-tab="posts" data-active="true">
+          <span>المنشورات</span>
+          <span class="k-tab__count" data-slot="count-posts">٠</span>
+        </button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="liked">
+          <span>المُعجَبة</span>
+        </button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="saved" hidden>
+          <span>المحفوظة</span>
+        </button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="about">
+          <span>نبذة</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="k-profile__content">
+
+      <!-- تبويب · المنشورات -->
+      <div class="k-tabpanel" data-panel="posts">
+        <div class="k-profile__grid" data-slot="posts-grid"></div>
+      </div>
+
+      <!-- تبويب · المُعجَبة -->
+      <div class="k-tabpanel" data-panel="liked" hidden>
+        <div class="k-profile__grid" data-slot="liked-grid"></div>
+      </div>
+
+      <!-- تبويب · المحفوظة -->
+      <div class="k-tabpanel" data-panel="saved" hidden>
+        <div class="k-profile__grid" data-slot="saved-grid"></div>
+      </div>
+
+      <!-- تبويب · نبذة -->
+      <div class="k-tabpanel" data-panel="about" hidden>
+        <div class="k-profile__about" data-slot="about"></div>
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الإعدادات
+     بطاقة تعريفية + 5 تبويبات + أقسام
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-settings">
+  <div class="k-settings">
+
+    <header class="k-settings__header">
+      <button class="k-appbar__action" type="button" aria-label="رجوع" data-action="back">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+      <h1 class="k-settings__title">الإعدادات</h1>
+    </header>
+
+    <div class="k-settings__identity">
+      <span class="k-avatar k-avatar--lg" data-slot="identity-avatar">
+        <span class="k-avatar__fallback">خ</span>
+      </span>
+      <div class="k-settings__identity-info">
+        <span class="k-settings__identity-name" data-slot="identity-name"></span>
+        <span class="k-settings__identity-handle" data-slot="identity-handle"></span>
+      </div>
+      <button class="k-settings__identity-edit" type="button" data-action="edit-profile">
+        تحرير
+      </button>
+    </div>
+
+    <div class="k-settings__tabs">
+      <div class="k-tabs" role="tablist" aria-label="تبويبات الإعدادات">
+        <button class="k-tab" type="button" role="tab" aria-selected="true" data-tab="profile" data-active="true">الملف</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="content">المحتوى</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="notifications">الإشعارات</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="privacy">الخصوصية</button>
+        <button class="k-tab" type="button" role="tab" aria-selected="false" data-tab="account">الحساب</button>
+      </div>
+    </div>
+
+    <div class="k-settings__body">
+
+      <!-- ═══ الملف ═══ -->
+      <div class="k-tabpanel" data-panel="profile">
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">المعلومات الأساسية</span>
+          </div>
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="edit-display-name">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الاسم المعروض</span>
+                <span class="k-settings-row__subtitle" data-slot="display-name-sub"></span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="edit-handle">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16v16H4z"/>
+                  <path d="M16 4v4M4 8h16"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">المعرّف</span>
+                <span class="k-settings-row__subtitle" data-slot="handle-sub"></span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="edit-bio">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 6h16M4 12h16M4 18h10"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">النبذة</span>
+                <span class="k-settings-row__subtitle" data-slot="bio-sub">أضف وصفاً قصيراً عنك</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="edit-avatar">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="3"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الصورة الرمزية</span>
+                <span class="k-settings-row__subtitle">تظهر بجانب كل تعليق ومنشور</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="edit-cover">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <path d="m2 15 5-5 4 4 3-3 8 8"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الغلاف</span>
+                <span class="k-settings-row__subtitle">صورة عريضة أعلى ملفك</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">روابط</span>
+          </div>
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="edit-website">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الموقع الشخصي</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="edit-location">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الموقع</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ المحتوى ═══ -->
+      <div class="k-tabpanel" data-panel="content" hidden>
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">المنشورات</span>
+          </div>
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="manage-posts">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="m3 16 5-5 4 4 3-3 6 6"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">إدارة منشوراتي</span>
+                <span class="k-settings-row__subtitle">تحرير · حذف · ترتيب</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">العرض</span>
+          </div>
+          <div class="k-settings-group__list">
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">المحتوى الحسّاس</div>
+                <div class="k-settings-toggle__subtitle">إخفاء المنشورات المُصنَّفة NSFW</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-toggle="hideNsfw">
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">التشغيل التلقائي للفيديو</div>
+                <div class="k-settings-toggle__subtitle">يُشغَّل عند ظهور المنشور</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-toggle="autoplayVideos">
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ الإشعارات ═══ -->
+      <div class="k-tabpanel" data-panel="notifications" hidden>
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">داخل التطبيق</span>
+          </div>
+          <div class="k-settings-group__list">
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">الإعجابات</div>
+                <div class="k-settings-toggle__subtitle">عندما يُعجب أحدهم بمنشورك</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-notify="likes" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">التعليقات</div>
+                <div class="k-settings-toggle__subtitle">الردود على منشوراتك</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-notify="comments" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">المتابعون الجدد</div>
+                <div class="k-settings-toggle__subtitle">عندما يتابعك مستخدم</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-notify="follows" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">الرسائل</div>
+                <div class="k-settings-toggle__subtitle">الرسائل الجديدة في البريد الوارد</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-notify="messages" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">خارج التطبيق</span>
+          </div>
+          <div class="k-settings-group__list">
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">البريد الإلكتروني</div>
+                <div class="k-settings-toggle__subtitle">ملخّص أسبوعي بنشاطك</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-notify="email">
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ الخصوصية ═══ -->
+      <div class="k-tabpanel" data-panel="privacy" hidden>
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">من يرى نشاطك</span>
+          </div>
+          <div class="k-settings-group__list">
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">حساب خاص</div>
+                <div class="k-settings-toggle__subtitle">لا يتابعك إلا من توافق عليه</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-privacy="privateAccount">
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">إظهار الإعجابات</div>
+                <div class="k-settings-toggle__subtitle">يظهر ما أعجبك للآخرين</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-privacy="showLikes" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">إظهار المحفوظات</div>
+                <div class="k-settings-toggle__subtitle">يظهر ما حفظته للآخرين</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-privacy="showSaves">
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">الرسائل</span>
+          </div>
+          <div class="k-settings-group__list">
+            <div class="k-settings-toggle">
+              <div class="k-settings-toggle__body">
+                <div class="k-settings-toggle__title">السماح بالرسائل</div>
+                <div class="k-settings-toggle__subtitle">من يمكنه مراسلتك</div>
+              </div>
+              <label class="k-switch">
+                <input type="checkbox" data-privacy="allowMessages" checked>
+                <span class="k-switch__track"><span class="k-switch__thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ الحساب ═══ -->
+      <div class="k-tabpanel" data-panel="account" hidden>
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">الأمان</span>
+          </div>
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="change-password">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="10" width="16" height="11" rx="2"/>
+                  <path d="M8 10V6a4 4 0 0 1 8 0v4"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">تغيير كلمة المرور</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="connected-accounts">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الحسابات المرتبطة</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="k-settings-row" type="button" data-action="sessions">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="14" rx="2"/>
+                  <path d="M8 20h8"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">الأجهزة النشطة</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__head">
+            <span class="k-settings-group__label">بياناتك</span>
+          </div>
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="download-data">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v12M7 10l5 5 5-5"/>
+                  <path d="M4 20h16"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">تنزيل بياناتي</span>
+                <span class="k-settings-row__subtitle">نسخة كاملة من نشاطك</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="k-danger-zone">
+          <div class="k-danger-zone__head">
+            <span class="k-danger-zone__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+                <path d="M12 9v4M12 17h.01"/>
+              </svg>
+            </span>
+            <span class="k-danger-zone__title">حذف الحساب</span>
+          </div>
+          <p class="k-danger-zone__text">
+            حذف نهائي للحساب وكل منشوراتك وتعليقاتك. لا يمكن التراجع.
+          </p>
+          <div class="k-danger-zone__actions">
+            <button class="k-btn k-btn--md k-btn--danger-ghost" type="button" data-action="delete-account">
+              حذف حسابي
+            </button>
+          </div>
+        </div>
+
+        <div class="k-settings-group">
+          <div class="k-settings-group__list">
+            <button class="k-settings-row" type="button" data-action="logout" data-danger="true">
+              <span class="k-settings-row__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <path d="m16 17 5-5-5-5M21 12H9"/>
+                </svg>
+              </span>
+              <span class="k-settings-row__body">
+                <span class="k-settings-row__title">تسجيل الخروج</span>
+              </span>
+              <svg class="k-settings-row__chevron" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الرسائل
+     قائمة محادثات (شاشة كاملة على الجوال · عمود يسار على الشاشات)
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-messages">
+  <div class="k-messages">
+
+    <header class="k-messages__header">
+      <h1 class="k-messages__title">الرسائل</h1>
+      <div class="k-messages__header-actions">
+        <button class="k-appbar__action" type="button" aria-label="محادثة جديدة" data-action="new-conversation">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="k-messages__search">
+      <div class="k-searchbar">
+        <svg class="k-searchbar__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          type="search"
+          class="k-searchbar__field"
+          placeholder="ابحث في المحادثات…"
+          autocomplete="off"
+          data-slot="conversation-search"
+        >
+      </div>
+    </div>
+
+    <div class="k-messages__list" data-slot="conversations" aria-live="polite">
+      <!-- عناصر دردشة -->
+    </div>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · المحادثة النشطة (تُعرض داخل /messages/:id)
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-conversation">
+  <div class="k-conversation" data-conversation-id="">
+
+    <header class="k-conversation__header">
+      <button class="k-conversation__back" type="button" aria-label="رجوع" data-action="back">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <div class="k-conversation__peer" role="button" tabindex="0" data-action="open-profile">
+        <span class="k-avatar k-avatar--sm" data-slot="peer-avatar">
+          <span class="k-avatar__fallback">؟</span>
+        </span>
+        <div class="k-conversation__peer-info">
+          <span class="k-conversation__peer-name" data-slot="peer-name"></span>
+          <span class="k-conversation__peer-status" data-slot="peer-status" data-status="offline"></span>
+        </div>
+      </div>
+
+      <div class="k-conversation__actions">
+        <button class="k-appbar__action" type="button" aria-label="خيارات" data-action="menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="k-conversation__body" data-slot="messages" aria-live="polite">
+      <!-- فقاعات الرسائل -->
+    </div>
+
+    <div class="k-composer">
+      <button class="k-composer__attach" type="button" aria-label="إرفاق" data-action="attach">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21 12-8.5 8.5a5 5 0 0 1-7.07-7.07l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.19 9.19a2 2 0 1 1-2.83-2.83l8.49-8.48"/>
+        </svg>
+      </button>
+
+      <div class="k-composer__field-wrap">
+        <textarea
+          class="k-composer__field"
+          placeholder="اكتب رسالة…"
+          rows="1"
+          data-slot="input"
+          aria-label="نص الرسالة"
+        ></textarea>
+      </div>
+
+      <button class="k-composer__send" type="button" aria-label="إرسال" disabled data-action="send">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     الشاشة · الإشعارات
+     ═══════════════════════════════════════════════════════════ -->
+<template id="screen-notifications">
+  <div class="k-collection">
+
+    <header class="k-collection__header">
+      <span class="k-collection__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+      </span>
+
+      <div class="k-collection__titles">
+        <h1 class="k-collection__title">الإشعارات</h1>
+        <span class="k-collection__count" data-slot="count">لا جديد</span>
+      </div>
+
+      <div class="k-collection__actions">
+        <button class="k-appbar__action" type="button" aria-label="وسم الكل مقروءاً" data-action="mark-all-read">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 5 5L20 7"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="k-collection__toolbar" role="tablist" aria-label="تصفية">
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="true" data-filter="all">الكل</button>
+      <button class="k-sortbar__chip" type="button" role="tab" aria-selected="false" data-filter="unread">غير المقروء</button>
+    </div>
+
+    <div class="k-list k-list--divided" data-slot="notifications" aria-live="polite">
+      <!-- صفوف الإشعارات -->
+    </div>
+
+  </div>
+</template>
