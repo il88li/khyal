@@ -1,6 +1,9 @@
 /* ============================================================
    خَيال · نقطة الدخول
    Express + WebSocket + تقديم الملفات الثابتة
+   الإصلاحات:
+   - uploads و staticRoot مثبّتان بجانب الملف (لا process.cwd)
+   - ضبط ثقة الوكيل لـ Render
    ============================================================ */
 
 import express from 'express';
@@ -10,16 +13,20 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import http from 'node:http';
+import crypto from 'node:crypto';
 
 import router from './routes.js';
 import {
-  loadUser, errorHandler, notFound,
+  loadUser, errorHandler, notFound, getUploadRoot,
 } from './middleware.js';
 import {
   pool, registerWsClient, unregisterWsClient,
 } from './services.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+/* ---- مسارات مثبّتة ---- */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const IS_PROD = NODE_ENV === 'production';
@@ -30,6 +37,7 @@ const IS_PROD = NODE_ENV === 'production';
 
 const app = express();
 
+// Render يقف خلف proxy — ثق به
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
@@ -59,20 +67,20 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 app.use(cookieParser());
 
-// الجلسة
+// الجلسة (يحمّل req.user إن وُجد)
 app.use(loadUser);
 
-// الطلبات
+// المسارات
 app.use(router);
 
-// الملفات المرفوعة
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads'), {
+// الملفات المرفوعة — من نفس مجلد middleware.js
+app.use('/uploads', express.static(getUploadRoot(), {
   maxAge: '30d',
   immutable: true,
 }));
 
-// الملفات الثابتة (الواجهة الأمامية)
-const staticRoot = process.env.STATIC_ROOT || path.resolve(process.cwd(), '..');
+// الملفات الثابتة (الواجهة الأمامية) — مجلد واحد فوق server/
+const staticRoot = process.env.STATIC_ROOT || path.resolve(__dirname, '..');
 app.use(express.static(staticRoot, {
   maxAge: IS_PROD ? '1h' : 0,
   etag: true,
@@ -84,7 +92,7 @@ app.use(express.static(staticRoot, {
   },
 }));
 
-// SPA fallback — كل ما ليس /api أو /uploads يعود إلى index.html
+// SPA fallback — كل مسار ليس /api أو /uploads يعود إلى index.html
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
     return next();
@@ -109,7 +117,6 @@ server.on('upgrade', async (req, socket, head) => {
     return;
   }
 
-  // استخرج الجلسة من الكوكي
   try {
     const cookieHeader = req.headers.cookie || '';
     const cookies = Object.fromEntries(
@@ -124,7 +131,6 @@ server.on('upgrade', async (req, socket, head) => {
       socket.destroy();
       return;
     }
-    const crypto = await import('node:crypto');
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
     const { rows } = await pool.query(`
       SELECT u.id FROM sessions s
@@ -152,18 +158,15 @@ wss.on('connection', (ws, req) => {
 
   registerWsClient(userId, ws);
 
-  // نبضة دورية للحفاظ على الاتصال
   ws.isAlive = true;
   ws.on('pong', () => { ws.isAlive = true; });
 
   ws.on('message', (data) => {
     try {
       const msg = JSON.parse(data.toString());
-      // رسائل العميل المدعومة: ping · typing
       if (msg.type === 'ping') {
         ws.send(JSON.stringify({ type: 'heartbeat', ts: Date.now() }));
       } else if (msg.type === 'typing') {
-        // أعد بثّ للطرف الآخر
         pool.query(`
           SELECT user_id FROM conversation_members
           WHERE conversation_id = $1 AND user_id <> $2
@@ -176,7 +179,7 @@ wss.on('connection', (ws, req) => {
                 typing: !!msg.typing,
               },
             });
-            // pushToUser مستوردة لكن بلا حاجة هنا
+            // نستخدم registerWsClient لاحقاً للتحسين
           }
         }).catch(() => {});
       }
@@ -193,7 +196,7 @@ wss.on('connection', (ws, req) => {
   ws.on('error', (err) => console.warn('[ws.error]', err.message));
 });
 
-// نبضة كل 30 ثانية
+// نبضة كل 30 ثانية للحفاظ على الاتصالات
 const heartbeat = setInterval(() => {
   wss.clients.forEach((ws) => {
     if (ws.isAlive === false) return ws.terminate();
@@ -207,9 +210,11 @@ heartbeat.unref?.();
    تشغيل
    ═══════════════════════════════════════════════════════════ */
 
-server.listen(PORT, () => {
-  console.info(`خَيال · جاهز على http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.info(`خَيال · جاهز على http://0.0.0.0:${PORT}`);
   console.info(`البيئة: ${NODE_ENV}`);
+  console.info(`المجلد الثابت: ${staticRoot}`);
+  console.info(`مجلد المرفوعات: ${getUploadRoot()}`);
 });
 
 // إغلاق نظيف
@@ -228,3 +233,11 @@ const shutdown = async (signal) => {
 
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+// منع انهيار الخادم على أخطاء غير ملتقطة
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err);
+});
