@@ -268,7 +268,6 @@ router.patch(
       const hash = await bcrypt.hash(r.value, 12);
       await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [hash, req.user.id]);
 
-      // أنهِ باقي الجلسات
       const token = req.cookies.khayal_sid;
       const tokenHash = token ? crypto.createHash('sha256').update(token).digest('hex') : '';
       await pool.query('DELETE FROM sessions WHERE user_id = $1 AND token_hash <> $2', [req.user.id, tokenHash]);
@@ -434,14 +433,15 @@ router.get('/api/discovery/users', async (req, res, next) => {
   try {
     const q = String(req.query.q || '').trim();
     if (!q) return res.json({ items: [], hasMore: false, cursor: null });
-    const rows = await searchUsers(q, Math.min(parseInt(req.query.limit || '20', 10), 50), req.query.cursor);
-    const items = rows.slice(0, Math.min(parseInt(req.query.limit || '20', 10))).map(r => ({
+    const limit = Math.min(parseInt(req.query.limit || '20', 10), 50);
+    const rows = await searchUsers(q, limit, req.query.cursor);
+    const items = rows.slice(0, limit).map(r => ({
       id: r.id, handle: r.handle, displayName: r.display_name,
       avatar: r.avatar, verified: r.verified, bio: r.bio || '',
       relation: {},
     }));
+    const hasMore = rows.length > limit;
     const last = rows[rows.length - 1];
-    const hasMore = rows.length > Math.min(parseInt(req.query.limit || '20', 10));
     res.json({
       items,
       hasMore,
