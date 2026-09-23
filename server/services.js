@@ -1,21 +1,103 @@
 /* ============================================================
    خَيال · الخدمات
    اتصال القاعدة + دوال منطق الأعمال
+   الإصلاح: SSL لـ Render PostgreSQL (شهادة موقّعة ذاتياً)
    ============================================================ */
 
 import pg from 'pg';
 
 const { Pool } = pg;
 
-export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL ||
-    'postgres://khayal:khayal@localhost:5432/khayal',
-  max: 20,
-  idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 5000,
+/* ═══════════════════════════════════════════════════════════
+   بناء إعدادات الاتصال — يدعم Render + التطوير المحلي
+   ═══════════════════════════════════════════════════════════ */
+
+function buildPoolConfig() {
+  const connectionString = process.env.DATABASE_URL;
+
+  // إذا لم يوجد DATABASE_URL، استخدم القيم الافتراضية للتطوير المحلي
+  if (!connectionString) {
+    console.warn('[db] DATABASE_URL غير مضبوط — سأستخدم الإعداد الافتراضي');
+    return {
+      host: 'localhost',
+      port: 5432,
+      user: 'khayal',
+      password: 'khayal',
+      database: 'khayal',
+      max: 20,
+      idleTimeoutMillis: 30_000,
+      connectionTimeoutMillis: 5000,
+    };
+  }
+
+  // --- معالجة مهمة ---
+  // إذا كان الرابط يحتوي على sslmode=require، فإنه يتجاوز أي إعداد ssl صريح.
+  // لذلك نزيل sslmode من الرابط، ثم نضبط ssl يدوياً.
+  let cleanUrl = connectionString;
+  let needsSsl = false;
+
+  try {
+    const url = new URL(connectionString);
+    if (url.searchParams.has('sslmode')) {
+      needsSsl = true;
+      url.searchParams.delete('sslmode');
+      cleanUrl = url.toString();
+    }
+  } catch (err) {
+    console.warn('[db] تعذّر تحليل DATABASE_URL:', err.message);
+  }
+
+  // كشف بيئات سحابية معروفة تستخدم SSL تلقائياً
+  const isCloud =
+    /render\.com|neon\.tech|supabase\.co|heroku|amazonaws\.com|azure\.com|digitalocean/i
+      .test(cleanUrl);
+
+  const useSsl =
+    needsSsl ||
+    isCloud ||
+    process.env.DATABASE_SSL === 'true';
+
+  const config = {
+    connectionString: cleanUrl,
+    max: 20,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
+  };
+
+  if (useSsl) {
+    // شهادة Render موقّعة ذاتياً — لا نتحقق منها
+    config.ssl = { rejectUnauthorized: false };
+  }
+
+  return config;
+}
+
+export const pool = new Pool(buildPoolConfig());
+
+// --- ربط مستمعي أخطاء الـ pool ---
+pool.on('error', (err) => {
+  console.error('[pg.pool]', err.message);
 });
 
-pool.on('error', (err) => console.error('[pg.pool]', err));
+pool.on('connect', () => {
+  console.info('[pg] اتصال جديد بالقاعدة');
+});
+
+/* ═══════════════════════════════════════════════════════════
+   فحص الاتصال عند البدء
+   ═══════════════════════════════════════════════════════════ */
+
+export async function checkConnection() {
+  try {
+    const { rows } = await pool.query('SELECT NOW() AS now, version() AS version');
+    console.info('[pg] ✓ اتصال ناجح — القاعدة:', rows[0].version.split(' ').slice(0, 2).join(' '));
+    return true;
+  } catch (err) {
+    console.error('[pg] ✗ فشل الاتصال:', err.message);
+    if (err.code) console.error('   code:', err.code);
+    return false;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════
    Cursor — base64({ts, id})
@@ -136,7 +218,7 @@ export function normalizeComment(row, viewer = {}) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   جمع view-state (likedSet, savedSet, followingSet)
+   جمع view-state
    ═══════════════════════════════════════════════════════════ */
 
 export async function loadViewerState(userId, postIds = [], authorIds = []) {
@@ -155,11 +237,13 @@ export async function loadViewerState(userId, postIds = [], authorIds = []) {
       pool.query('SELECT post_id FROM likes WHERE user_id = $1 AND post_id = ANY($2)',
         [userId, postIds])
         .then(r => r.rows.forEach(x => state.likedSet.add(x.post_id)))
+        .catch(() => {})
     );
     tasks.push(
       pool.query('SELECT post_id FROM saves WHERE user_id = $1 AND post_id = ANY($2)',
         [userId, postIds])
         .then(r => r.rows.forEach(x => state.savedSet.add(x.post_id)))
+        .catch(() => {})
     );
   }
 
@@ -168,6 +252,7 @@ export async function loadViewerState(userId, postIds = [], authorIds = []) {
       pool.query('SELECT following_id FROM follows WHERE follower_id = $1 AND following_id = ANY($2)',
         [userId, authorIds])
         .then(r => r.rows.forEach(x => state.followingSet.add(x.following_id)))
+        .catch(() => {})
     );
   }
 
@@ -195,10 +280,6 @@ const POST_FILTERS = {
   top:      'p.likes_count DESC, p.created_at DESC',
 };
 
-/**
- * قائمة منشورات بترقيم cursor.
- * @returns {Promise<{items, cursor, hasMore, total}>}
- */
 export async function listPosts(opts = {}, viewerId = null) {
   const {
     sort = 'recent', period = 'all', tags, models, author,
@@ -234,7 +315,6 @@ export async function listPosts(opts = {}, viewerId = null) {
 
   const cur = decodeCursor(cursor);
   if (cur) {
-    // نستخدم مقارنة بسيطة على created_at (تجاهل id للتيسيط)
     conds.push(`p.created_at < $${i++}`);
     params.push(cur.ts);
   }
@@ -265,7 +345,6 @@ export async function listPosts(opts = {}, viewerId = null) {
   return { items: normalized, cursor: nextCursor, hasMore, total: normalized.length };
 }
 
-/** جلب منشور واحد بمعرّفه */
 export async function getPostById(id, viewerId = null) {
   const { rows } = await pool.query(
     `${POST_SELECT} WHERE p.id = $1 AND p.deleted_at IS NULL`, [id]
@@ -273,12 +352,10 @@ export async function getPostById(id, viewerId = null) {
   if (!rows.length) return null;
   const row = rows[0];
   const viewer = await loadViewerState(viewerId, [row.id], [row.author_id]);
-  // زيادة المشاهدات بلا انتظار
   pool.query('UPDATE posts SET views_count = views_count + 1 WHERE id = $1', [id]).catch(() => {});
   return normalizePost(row, viewer);
 }
 
-/** منشورات ذات صلة — نفس الوسوم أو نفس المؤلف */
 export async function getRelatedPosts(postId, limit = 8, viewerId = null) {
   const { rows } = await pool.query(`
     SELECT p.*,
@@ -324,10 +401,10 @@ export async function createNotification({
 }
 
 /* ═══════════════════════════════════════════════════════════
-   الإشعارات الحية (تُستخدم من routes.js عبر WS)
+   WebSocket — إشعارات حية
    ═══════════════════════════════════════════════════════════ */
 
-const wsClients = new Map(); // userId → Set<WebSocket>
+const wsClients = new Map();
 
 export function registerWsClient(userId, ws) {
   if (!wsClients.has(userId)) wsClients.set(userId, new Set());
@@ -424,7 +501,6 @@ export async function searchUsers(q, limit = 20, cursor = null) {
     WHERE ${conds.join(' AND ')}
     ORDER BY
       CASE WHEN LOWER(handle) = $1 THEN 0 ELSE 1 END,
-      followers_count_cache DESC NULLS LAST,
       created_at DESC
     LIMIT $${i}
   `, params);
