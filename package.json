@@ -7,12 +7,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "install:server": "cd server && npm install",
-    "build": "cd server && npm install --omit=dev --no-audit --no-fund",
+    "build": "cd server && npm install --no-audit --no-fund",
     "start": "cd server && node index.js",
-    "dev": "cd server && node --watch index.js",
-    "db:migrate": "cd server && node db/migrate.js",
-    "db:seed": "cd server && node db/seed.js",
-    "db:reset": "cd server && node db/migrate.js --reset && node db/seed.js"
+    "db:seed": "cd server && node db/setup.js",
+    "db:setup": "cd server && node db/setup.js"
   }
 }
