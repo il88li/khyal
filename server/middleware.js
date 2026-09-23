@@ -1,6 +1,7 @@
 /* ============================================================
    خَيال · الوسطاء
    auth · csrf · rateLimit · validate · sanitize · upload
+   الإصلاح: UPLOAD_ROOT مثبّت بجانب الملف (لا process.cwd)
    ============================================================ */
 
 import crypto from 'node:crypto';
@@ -8,7 +9,12 @@ import bcrypt from 'bcrypt';
 import multer from 'multer';
 import path from 'node:path';
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { pool } from './services.js';
+
+/* ---- مسارات مثبّتة ---- */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* ═══════════════════════════════════════════════════════════
    الحساب والجلسة
@@ -75,15 +81,22 @@ export async function loadUser(req, _res, next) {
     }
     const row = rows[0];
     req.user = {
-      id: row.id, handle: row.handle, displayName: row.display_name,
-      email: row.email, avatar: row.avatar, cover: row.cover,
-      bio: row.bio, location: row.location, website: row.website,
-      accentColor: row.accent_color, verified: row.verified,
-      role: row.role, status: row.status,
+      id: row.id,
+      handle: row.handle,
+      displayName: row.display_name,
+      email: row.email,
+      avatar: row.avatar,
+      cover: row.cover,
+      bio: row.bio,
+      location: row.location,
+      website: row.website,
+      accentColor: row.accent_color,
+      verified: row.verified,
+      role: row.role,
+      status: row.status,
       createdAt: row.created_at,
     };
-    req.session = { id: row.session_id, csrfToken: row.csrf_token };
-    req.session.userId = req.user.id;
+    req.session = { id: row.session_id, csrfToken: row.csrf_token, userId: row.id };
     next();
   } catch (err) {
     next(err);
@@ -107,7 +120,6 @@ const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 export function csrfProtect(req, res, next) {
   if (SAFE_METHODS.has(req.method)) return next();
 
-  // المسارات العامة المعفاة (مثل تسجيل الدخول)
   const exempt = [
     '/api/account/signup',
     '/api/account/login',
@@ -119,14 +131,17 @@ export function csrfProtect(req, res, next) {
     return res.status(403).json({ error: 'no-session', message: 'لا توجد جلسة نشطة' });
   }
   const provided = req.headers['x-csrf-token'];
-  if (!provided || !crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(req.session.csrfToken))) {
+  if (!provided || !crypto.timingSafeEqual(
+    Buffer.from(provided),
+    Buffer.from(req.session.csrfToken)
+  )) {
     return res.status(403).json({ error: 'csrf', message: 'رمز الحماية غير صالح' });
   }
   next();
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Rate Limiting — مبني على الذاكرة
+   Rate Limiting
    ═══════════════════════════════════════════════════════════ */
 
 const buckets = new Map();
@@ -137,12 +152,6 @@ setInterval(() => {
   }
 }, 60_000).unref?.();
 
-/**
- * @param {object} opts
- * @param {number} opts.max     عدد الطلبات في النافذة
- * @param {number} opts.window  حجم النافذة بالملي ثانية
- * @param {string} [opts.key]   مُفتّح مخصص (افتراضي: IP+path)
- */
 export function rateLimit(opts = {}) {
   const { max = 60, window: win = 60_000 } = opts;
   return (req, res, next) => {
@@ -175,7 +184,6 @@ export function rateLimit(opts = {}) {
    Sanitize + Validate
    ═══════════════════════════════════════════════════════════ */
 
-/** إزالة وسوم HTML ومحارف التحكم */
 export function sanitizeText(input, maxLen = 4000) {
   if (input == null) return '';
   let s = String(input).slice(0, maxLen);
@@ -184,7 +192,6 @@ export function sanitizeText(input, maxLen = 4000) {
   return s.trim();
 }
 
-/** تنقية رابط — يقبل https فقط */
 export function sanitizeUrl(input) {
   if (!input) return null;
   const s = String(input).trim();
@@ -197,7 +204,6 @@ export function sanitizeUrl(input) {
   }
 }
 
-/** قواعد تحقق أساسية */
 export const validators = {
   handle: (v) => {
     const s = String(v || '').trim().replace(/^@/, '').toLowerCase();
@@ -269,11 +275,6 @@ export const validators = {
   },
 };
 
-/**
- * يتحقق من جسم الطلب حسب مخطط.
- * @param {object} schema  {field: validator}
- * @param {object} [opts]  {partial: bool}
- */
 export function validateBody(schema, opts = {}) {
   return (req, _res, next) => {
     const out = {};
@@ -296,10 +297,13 @@ export function validateBody(schema, opts = {}) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   رفع الملفات
+   رفع الملفات — المسار مثبّت بجانب middleware.js
    ═══════════════════════════════════════════════════════════ */
 
-const UPLOAD_ROOT = path.resolve(process.cwd(), 'uploads');
+const UPLOAD_ROOT =
+  process.env.UPLOAD_ROOT ||
+  path.resolve(__dirname, 'uploads');
+
 if (!fs.existsSync(UPLOAD_ROOT)) fs.mkdirSync(UPLOAD_ROOT, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -319,7 +323,11 @@ const storage = multer.diskStorage({
 });
 
 const ALLOWED_IMAGE = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
-const ALLOWED_ATTACH = new Set([...ALLOWED_IMAGE, 'video/mp4', 'video/webm', 'application/pdf']);
+const ALLOWED_ATTACH = new Set([
+  ...ALLOWED_IMAGE,
+  'video/mp4', 'video/webm',
+  'application/pdf',
+]);
 
 export const uploadImage = multer({
   storage,
@@ -351,6 +359,11 @@ export const uploadAttachment = multer({
 export function fileToUrl(file) {
   const rel = path.relative(UPLOAD_ROOT, file.path).split(path.sep).join('/');
   return `/uploads/${rel}`;
+}
+
+/** يُستخدم في index.js لتحديد مسار المجلد */
+export function getUploadRoot() {
+  return UPLOAD_ROOT;
 }
 
 /* ═══════════════════════════════════════════════════════════
