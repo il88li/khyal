@@ -1,15 +1,22 @@
 {
-  "name": "khayal",
+  "name": "khayal-server",
   "version": "1.0.0",
   "private": true,
-  "description": "خَيال · منصة برومبتات الصور العربية",
-  "engines": {
-    "node": ">=20.0.0"
-  },
+  "type": "module",
+  "description": "خادم خَيال · منصة برومبتات الصور العربية",
+  "main": "index.js",
+  "engines": { "node": ">=20.0.0" },
   "scripts": {
-    "build": "cd server && npm install --no-audit --no-fund",
-    "start": "cd server && node index.js",
-    "db:seed": "cd server && node db/setup.js",
-    "db:setup": "cd server && node db/setup.js"
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.21.1",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.1",
+    "ws": "^8.18.0"
   }
 }
