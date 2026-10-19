@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /setup
+Disallow: /api/
+Disallow: /settings
+Disallow: /notifications
+Disallow: /requests
+
+Sitemap: https://khiyal-web.vercel.app/sitemap.xml

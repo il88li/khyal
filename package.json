@@ -1,0 +1,37 @@
+{
+  "name": "khiyal",
+  "description": "Khiyal — Arabic prompt enhancement platform",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@10.9.2",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.0",
+    "browser-image-compression": "^2.0.2",
+    "firebase": "^10.13.0",
+    "firebase-admin": "^12.5.0",
+    "framer-motion": "^11.5.0",
+    "lucide-react": "^0.440.0",
+    "next": "^14.2.15",
+    "pg": "^8.13.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5",
+    "@types/pg": "^8.11.10"
+  }
+}

@@ -1,0 +1,381 @@
+/* ==================================================================
+   app/clean.css — نظام خيال الجديد: سطوح مسطحة، مسافات بدل حدود،
+   ظل للارتفاع فقط، حركة نابضة/ease-out (لا خطّية)، بلا زخرفة.
+   ================================================================== */
+:root {
+  --brand: 204 23 40; --brand-lo: 160 14 30; --brand-hi: 232 80 92;
+  --brand-ink: 160 14 30; --brand-tint: 253 233 235; --on-brand: 255 255 255;
+  --c-fog: 247 248 251; --c-snow: 255 255 255; --c-mist: 238 240 246;
+  --c-ink: 18 20 28; --c-ink-2: 60 66 84; --c-ink-3: 104 112 132;
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --ease: cubic-bezier(.2, 0, 0, 1);
+  --float: 0 16px 40px -12px rgb(14 22 48 / .22);   /* ارتفاع فقط: نوافذ وقوائم */
+}
+html.dark {
+  --brand: 214 40 54; --brand-lo: 176 31 44; --brand-hi: 240 110 118;
+  --brand-ink: 255 138 146; --brand-tint: 64 22 28;
+  --c-fog: 18 18 18; --c-snow: 27 28 33; --c-mist: 38 40 48;
+  --c-ink: 238 241 248; --c-ink-2: 201 207 221; --c-ink-3: 154 163 184;
+  --float: 0 16px 40px -12px rgb(0 0 0 / .6);
+}
+body { font-family: var(--font-sans), "IBM Plex Sans Arabic", system-ui, sans-serif; font-size: 14px; line-height: 1.7; letter-spacing: .01em; background: rgb(var(--c-fog)); }
+
+/* ── إزالة الحدود والظلال الزخرفية: التجميع بالمسافة والتباين ── */
+.border-silver, .border-line, .border-mist, .border-fog { border-color: transparent !important; }
+.shadow-soft, .shadow-md, .shadow-sm { box-shadow: none !important; }
+.shadow-lift { box-shadow: var(--float) !important; }
+.card, .glass, .glass-strong, .search-tile, .prompt-card, .daily-card, .stat-tile {
+  border: 0 !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  background: rgb(var(--c-snow)) !important; border-radius: 20px !important;
+}
+.card-interactive { transition: background-color .25s var(--ease), transform .5s var(--spring); }
+.card-interactive:hover { background: rgb(var(--c-mist)) !important; }
+.card-interactive:active { transform: scale(.98); }
+.prompt-card:hover, .search-tile:hover { background: rgb(var(--c-snow)) !important; box-shadow: none !important; }
+
+/* ── الهيدر والتنقل: أسطح صلبة بلا خطوط فاصلة ── */
+.app-topbar { background: rgb(var(--c-fog)) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.app-sidebar { background: rgb(var(--c-snow)) !important; border: 0 !important; }
+.mobile-bottomnav { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.mobile-bottomnav a { color: rgb(var(--c-ink-3)); }
+.mobile-bottomnav a[aria-current="page"] { color: rgb(var(--brand-ink)); }
+.mobile-bottomnav .create-link { background: rgb(var(--brand)) !important; color: rgb(var(--on-brand)) !important; border-radius: 9999px !important; box-shadow: none !important; }
+.app-menu-panel { background: rgb(var(--c-snow)) !important; border: 0 !important; box-shadow: var(--float) !important; border-radius: 20px !important; }
+.sidebar-link { transition: background-color .25s var(--ease), color .25s var(--ease); }
+.sidebar-link[aria-current="page"] { background: rgb(var(--brand-tint)) !important; color: rgb(var(--brand-ink)) !important; }
+.sidebar-footer { background: transparent !important; border: 0 !important; padding: 16px; }
+.workspace-header { border: 0 !important; }
+
+/* ── الأزرار: xs 28 · sm 32 · md 36 · lg 44 · xl 52 — بلا حدود ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0 !important; box-shadow: none !important;
+  border-radius: 9999px !important; font-weight: 600; white-space: nowrap;
+  background: rgb(var(--c-mist)); color: rgb(var(--c-ink));
+  transition: background-color .25s var(--ease), color .25s var(--ease), transform .5s var(--spring), opacity .2s var(--ease); }
+.btn:not(:disabled):active { transform: scale(.95); }
+.btn:disabled, .btn[aria-busy="true"] { opacity: .5; cursor: not-allowed; }
+.btn:focus-visible, .icon-btn:focus-visible, .field:focus-visible, .tabs2 button:focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; }
+.btn-xs { min-height: 28px !important; padding-inline: 10px !important; font-size: 11px !important; }
+.btn-sm { min-height: 32px !important; padding-inline: 12px !important; font-size: 12px !important; }
+.btn-md { min-height: 36px !important; padding-inline: 16px !important; font-size: 12px !important; }
+.btn-lg { min-height: 44px !important; padding-inline: 20px !important; font-size: 14px !important; }
+.btn-xl { min-height: 52px !important; padding-inline: 24px !important; font-size: 16px !important; }
+.btn-primary { background: rgb(var(--brand)) !important; color: rgb(var(--on-brand)) !important; }
+.btn-primary:hover:not(:disabled) { background: rgb(var(--brand-lo)) !important; }
+.btn-secondary, .btn-soft { background: rgb(var(--brand-tint)) !important; color: rgb(var(--brand-ink)) !important; }
+.btn-success { background: rgb(var(--ok-tint)) !important; color: rgb(var(--ok-ink)) !important; }
+.btn-error { background: rgb(var(--danger-tint)) !important; color: rgb(var(--danger)) !important; }
+.btn-warning { background: rgb(var(--gold-tint)) !important; color: rgb(var(--gold-ink)) !important; }
+.btn-transparent, .btn-ghost { background: transparent !important; color: rgb(var(--brand-ink)) !important; }
+.btn-transparent:hover, .btn-ghost:hover { background: rgb(var(--brand-tint)) !important; }
+.icon-btn { display: inline-grid; place-items: center; width: 40px !important; height: 40px !important; border: 0 !important; border-radius: 9999px !important; background: transparent; color: rgb(var(--c-ink-2));
+  transition: background-color .25s var(--ease), transform .5s var(--spring); }
+.icon-btn:hover:not(:disabled) { background: rgb(var(--c-mist)); transform: none; }
+.icon-btn:active:not(:disabled) { transform: scale(.88); }
+
+/* ── الحقول: سطح مظلّل، حالة التركيز بتحوّل لوني لا بحد دائم ── */
+.field { border: 0 !important; background: rgb(var(--c-mist)) !important; border-radius: 14px !important; min-height: 44px; color: rgb(var(--c-ink));
+  animation: none !important; box-shadow: inset 0 0 0 1.5px transparent;
+  transition: box-shadow .25s var(--ease), background-color .25s var(--ease); }
+.field:focus { box-shadow: inset 0 0 0 1.5px rgb(var(--brand)) !important; outline: 0; }
+.fld { display: flex; flex-direction: column; gap: 4px; }
+.fld-label { font-size: 12px; font-weight: 600; color: rgb(var(--c-ink-2)); }
+.fld-hint { font-size: 12px; color: rgb(var(--c-ink-3)); }
+.fld[data-invalid="1"] .field { box-shadow: inset 0 0 0 1.5px rgb(var(--danger)) !important; }
+.fld[data-invalid="1"] .fld-hint { color: rgb(var(--danger)); }
+.choice { display: flex; min-height: 44px; align-items: center; gap: 12px; }
+.choice input { width: 20px; height: 20px; accent-color: rgb(var(--brand)); }
+
+/* ── تبويبات وشرائح ── */
+.chip, .seg, .tabs2 { border: 0 !important; }
+.chip { background: rgb(var(--c-mist)); border-radius: 9999px; }
+.tabs2 { display: flex; gap: 8px; }
+.tabs2 button { min-height: 36px; padding-inline: 16px; border-radius: 9999px; color: rgb(var(--c-ink-3)); background: transparent;
+  transition: background-color .25s var(--ease), color .25s var(--ease), transform .5s var(--spring); }
+.tabs2 button[data-on="1"], .tabs2 button[aria-selected="true"] { background: rgb(var(--brand-tint)); color: rgb(var(--brand-ink)); font-weight: 600; animation: none !important; }
+.tabs2 button:active { transform: scale(.95); }
+.tabs2 > button[data-on="1"]::after { display: none !important; }
+.seg > button[data-on="1"] { animation: none !important; }
+
+/* ── تنبيهات ── */
+.alert { display: flex; align-items: flex-start; gap: 12px; padding: 16px; border-radius: 20px; }
+.alert-info { background: rgb(var(--info-tint)); color: rgb(var(--info-ink)); }
+.alert-success { background: rgb(var(--ok-tint)); color: rgb(var(--ok-ink)); }
+.alert-warning { background: rgb(var(--gold-tint)); color: rgb(var(--gold-ink)); }
+.alert-error { background: rgb(var(--danger-tint)); color: rgb(var(--danger)); }
+
+/* ── Bento: شبكة 2 عمود على الهاتف، 4 على الشاشات الأوسع ── */
+.bento { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.bento > .span-2 { grid-column: span 2; }
+@media (min-width: 768px) { .bento { grid-template-columns: repeat(4, minmax(0, 1fr)); } .bento > .md-span-2 { grid-column: span 2; } }
+.stat-tile { align-items: flex-start !important; text-align: start !important; padding: 16px !important; gap: 8px !important; }
+.stat-tile.span-2 { flex-direction: row !important; align-items: center !important; gap: 16px !important; }
+
+/* ── بلا زخرفة: تعطيل التوهج/الدوران القديم ── */
+.logo-float, html.dark .field { animation: none !important; }
+.skel::after { display: none !important; }
+.skel { animation: skel-pulse 1.6s var(--ease) infinite; }
+@keyframes skel-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
+
+/* صورة البطاقة: النسبة تأتي من مقاس الصورة الفعلي */
+.prompt-gallery-slide img { aspect-ratio: auto !important; height: 100% !important; }
+.prompt-gallery-track { max-height: 75dvh; }
+
+/* بطاقة البرومبت الزجاجية الأفقية في معاينة الصورة: الصورة نفسها خلفية مموّهة */
+.glass-h { position: relative; overflow: hidden; border-radius: 20px; isolation: isolate; }
+.glass-h-bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); filter: blur(8px) saturate(1.1); }
+.glass-h::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgb(0 0 0 / .4); box-shadow: inset 0 1px 0 rgb(255 255 255 / .12); }
+.glass-h-body { display: flex; min-width: 0; flex-direction: column; gap: 8px; padding: 16px; }
+.glass-h-text { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 24px), transparent); }
+
+/* بطاقة نص البرومبت: ارتفاع ثابت مع تمرير داخلي — في الفيد ومعاينة الصورة */
+.prompt-text-card { cursor: pointer; }
+.glass-h-fallback { position: absolute; inset: 0; z-index: -2; background: linear-gradient(135deg, rgb(var(--brand)), rgb(var(--brand-lo))); }
+.prompt-text-scroll { max-height: 148px; overflow-y: auto; overscroll-behavior: contain; padding-inline-end: 4px; }
+.prompt-text-scroll--sm { max-height: 92px; }
+.glass-h-body--sm { gap: 6px; padding: 12px 14px; }
+.prompt-lock-note--glass { background: rgb(255 255 255 / .18) !important; color: #fff !important; }
+
+/* الشعار الجديد: بلا إطار أو خلفية */
+.brand-mark { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+.brand-mark img { object-fit: contain; }
+
+/* ── الهيدر: قرص عائم بنفس حجم شريط التنقل السفلي ── */
+.app-topbar { position: fixed !important; top: calc(10px + env(safe-area-inset-top)) !important; inset-inline: 10px !important;
+  width: min(calc(100% - 20px), 560px) !important; max-width: none !important; margin-inline: auto !important;
+  height: 64px !important; padding: 0 !important; border: 0 !important; border-bottom: 0 !important; border-radius: 26px !important; z-index: 50 !important;
+  background: rgb(var(--c-snow)) !important; box-shadow: var(--float) !important; overflow: visible !important; }
+.app-topbar-inner { display: flex !important; width: 100% !important; height: 64px !important; min-height: 64px !important; align-items: center; justify-content: space-between; gap: 6px; margin-inline: 0 !important; padding-inline: 16px !important; }
+
+/* ── التنقل السفلي: شريط عائم بحواف دائرية بدل الالتصاق بالحافة ── */
+.mobile-bottomnav { position: fixed !important; inset-inline: 10px !important; bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  width: min(calc(100% - 20px), 560px) !important; margin-inline: auto !important; z-index: 44 !important;
+  border: 0 !important; border-radius: 26px !important; padding-bottom: 0 !important;
+  background: rgb(var(--c-snow)) !important; box-shadow: var(--float) !important; }
+.mobile-bottomnav ul { padding: 0 8px; }
+.mobile-bottomnav li { display: flex; align-items: center; justify-content: center; }
+
+/* ── المسافات: المحتوى يبدأ أسفل الهيدر العائم، والشريط العائم لا يغطي آخر الصفحة ── */
+@media (max-width: 1023px) {
+  :root { --top: calc(84px + env(safe-area-inset-top)); --bottom: 96px; }
+  .workspace-shell { padding-top: calc(84px + env(safe-area-inset-top)); }
+}
+
+/* ==================================================================
+   الفيد وبطاقة البرومبت — رفع الجودة البصريّة:
+   تبويبات واضحة، تفاعل لمس/فأرة، وهيكل تحميل مطابق للبطاقة.
+   يبقى الطابع الحالي: أسطح مسطحة، والارتفاع (الظل) عند التفاعل فقط.
+   ================================================================== */
+
+/* ── الهيدر اللاصق: فاصل شعري رقيق + تعتيم خلفي للمحتوى المار تحته ── */
+.feed-sticky-header {
+  border-bottom: 1px solid rgb(var(--c-line) / .6) !important;
+  box-shadow: none !important;
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .feed-sticky-header {
+    background: rgb(var(--c-fog) / .9) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  }
+}
+
+/* ── شريط التبويبات: حبيبة اختيار مرتفعة بلون الهوية ── */
+.feed-tabs { width: 100%; }
+.feed-tabs > button {
+  min-height: 40px;
+  color: rgb(var(--c-ink-3));
+  font-weight: 600;
+}
+.feed-tabs > button[data-on="1"] { color: rgb(var(--brand-ink)); }
+.feed-tab-pill {
+  border-radius: 9999px;
+  background: rgb(var(--c-snow));
+  box-shadow: 0 1px 2px rgb(14 22 48 / .1), 0 5px 14px -6px rgb(14 22 48 / .2);
+}
+html.dark .feed-tab-pill {
+  background: rgb(255 255 255 / .1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .12);
+}
+
+/* ── شرائح الفئات: المحدد بلون الهوية الصريح ── */
+.feed-cat { transition: background-color .2s var(--ease), color .2s var(--ease); }
+.feed-cat[data-on="1"] {
+  background: rgb(var(--brand)) !important;
+  color: rgb(var(--on-brand)) !important;
+}
+
+/* ── ملاحظة التخصيص: بانر ناعم بأيقونة ── */
+.feed-note { display: inline-flex; align-items: center; gap: 8px; }
+.feed-note svg { flex: 0 0 auto; color: rgb(var(--brand)); }
+
+/* ── بطاقة البرومبت: ارتفاع خفيف عند المرور (أجهزة مؤشرة فقط) ── */
+@media (hover: hover) and (pointer: fine) {
+  .prompt-card { transition: box-shadow .22s var(--ease) !important; }
+  .prompt-card:hover { box-shadow: var(--float) !important; }
+}
+
+/* ── هيكل تحميل الفيد: يطابق أبعاد البطاقة لتقليل قفزة التخطيط ── */
+.prompt-card-skel { pointer-events: none; }
+.prompt-card-skel .prompt-card-media { aspect-ratio: 16 / 9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt-card, .feed-cat, .feed-tab-pill { transition: none !important; }
+}
+
+/* ── أداء الفيد الطويل: تخطّي رسم البطاقات خارج الشاشة مع حفظ ارتفاع تقديري ── */
+.prompt-card { content-visibility: auto; contain-intrinsic-size: auto 440px; }
+
+/* ── هيكل تحميل البطاقة (promptCard): مسافات موحّدة مع البطاقة الحقيقية ── */
+.prompt-card-skel { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
+.prompt-card-skel .skel { border-radius: 8px; }
+
+/* ── إشعار قفل البرومبت: سطر واحد مختصر داخل البطاقة ── */
+.prompt-lock-note {
+  display: inline-flex; align-self: flex-start;
+  margin-top: 2px; padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgb(var(--brand-tint)); color: rgb(var(--brand-ink));
+  font-size: 11px; font-weight: 600;
+}
+
+/* ── شريط انقطاع الاتصال ── */
+.offline-bar {
+  position: fixed;
+  left: 0; right: 0; margin: 0 auto;
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  z-index: 95;
+  width: max-content; max-width: calc(100% - 24px);
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgb(var(--c-ink)); color: rgb(var(--c-snow));
+  font-size: 13px; font-weight: 600; line-height: 1.5;
+  box-shadow: var(--float);
+}
+.offline-bar svg { flex: 0 0 auto; color: rgb(var(--gold)); }
+@media (min-width: 769px) { .offline-bar { bottom: calc(24px + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) { .offline-bar { transition: none !important; } }
+
+/* ==================================================================
+   المرحلة 3 — إعادة تركيب الشاشات: طبقات · Bento · انتقال مشترك
+   التجميع بالمسافة والعمق الوظيفي فقط: بلا توهّج ولا زخرفة.
+   ================================================================== */
+
+/* ── الانتقال المشترك: الوسائط نفسها تنتقل من البطاقة إلى معاينتها ── */
+::view-transition-group(*) {
+  animation-duration: .34s;
+  animation-timing-function: var(--ease);
+}
+::view-transition-old(*), ::view-transition-new(*) { animation-duration: .34s; mix-blend-mode: normal; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ── البطاقة: عنوان متراكب على حافّة الوسائط (الوسائط طبقة أسفل، والنص يعلوها) ── */
+.prompt-media-title {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 30px 14px 12px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-shadow: 0 1px 3px rgb(0 0 0 / .5);
+  background: linear-gradient(to top, rgb(0 0 0 / .62), rgb(0 0 0 / .12) 55%, transparent);
+  pointer-events: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.prompt-gallery-dots { z-index: 3; bottom: 10px; }
+
+/* ── الرئيسية: شريط Bento تمهيدي (ترحيب ممتدّ + اهتماماتك + أنشئ) ── */
+.feed-band { margin-bottom: 4px; }
+.feed-band-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 20px !important;
+  padding: 18px !important;
+  background: linear-gradient(150deg, rgb(var(--brand-tint) / .9), rgb(var(--c-snow)) 72%) !important;
+}
+.feed-band-hi { font-size: 18px; font-weight: 700; color: rgb(var(--c-ink)); }
+.feed-band-note { font-size: 13px; line-height: 1.8; color: rgb(var(--c-ink-2)); }
+.feed-band-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 20px !important;
+  padding: 16px !important;
+  color: rgb(var(--c-ink));
+  background: rgb(var(--c-snow)) !important;
+  transition: transform .5s var(--spring), background-color .25s var(--ease);
+}
+.feed-band-tile:active { transform: scale(.97); }
+.feed-band-tile svg { color: rgb(var(--brand)); }
+.feed-band-t { font-size: 13px; font-weight: 700; }
+.feed-band-s { font-size: 11px; color: rgb(var(--c-ink-3)); line-height: 1.6; }
+
+/* ── الملف الشخصي للمالك: بطاقة تتوسّع بالسحب بلا نافذة منبثقة ── */
+.owner-card { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.owner-card-media { position: relative; overflow: hidden; border-radius: 0; background: rgb(var(--c-mist)); }
+.owner-card-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.owner-card-head { display: flex; align-items: center; gap: 10px; padding: 14px; }
+.owner-card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgb(var(--c-ink));
+}
+.owner-card-body { display: flex; flex-direction: column; gap: 10px; padding: 0 14px 8px; }
+.owner-card-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 14px; }
+.owner-grip {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  background: rgb(var(--c-mist));
+  color: rgb(var(--c-ink-3));
+  font-size: 11px;
+  font-weight: 600;
+  touch-action: none;
+  cursor: grab;
+}
+.owner-grip:active { cursor: grabbing; }
+.owner-versions { display: flex; flex-direction: column; gap: 6px; }
+
+/* ── الاستكشاف: بلاطة أولى ممتدّة (نقطة ارتكاز Bento) ── */
+@media (min-width: 768px) {
+  .search-grid > .featured { grid-column: span 2; }
+  .search-grid > .featured img { max-height: 360px; }
+}
+
+/* ── الإشعارات: مجموعات زمنية بلا حدود ── */
+.notif-group { display: flex; flex-direction: column; gap: 8px; }
+.notif-group > h2 { padding-inline: 4px; font-size: 11px; font-weight: 700; color: rgb(var(--c-ink-3)); }
+
+/* ==================================================================
+   بلا نيون وبلا توهّج وبلا زخرفة بلا وظيفة —
+   تُلغي كل ما تبقّى من تدرّجات إشعاعية ونبض ودوران وطفو.
+   ================================================================== */
+.aurora, html.dark .aurora { background: rgb(var(--c-fog)) !important; }
+.aurora::before { display: none !important; }
+
+html.dark .field { border: 0 !important; animation: none !important; box-shadow: inset 0 0 0 1.5px transparent !important; }
+html.dark .field:focus { box-shadow: inset 0 0 0 1.5px rgb(var(--brand)) !important; }
+.tabs2 > button[data-on="1"]::after, .seg > button[data-on="1"] { animation: none !important; }
+.icon-btn:hover, .prompt-social-icon:hover, .prompt-social-action:hover { transform: none !important; }
+.logo-float { animation: none !important; transform: none !important; }
+

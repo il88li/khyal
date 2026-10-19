@@ -1,0 +1,160 @@
+/* ==================================================================
+   app/tokens.css — المصدر الوحيد للحقيقة في نظام تصميم خيال.
+   ─ الفاتح والداكن، الأحمر #CC1728 والأساس #121212.
+   ─ الطباعة العربية، الأشكال، المسافات، الظلال (للارتفاع فقط)، الأيقونات.
+   ─ فلسفة الحركة: زنبرك عند اللمس، تباطؤ عند الظهور، مدد قصيرة.
+   يُستورد أخيراً في app/layout.tsx ليكون المرجع النهائي لكل الرموز.
+   لا نيون، لا توهج، لا زخرفة بلا وظيفة.
+   ================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ── الخط ── */
+  --font-sans: "Zanjabeel", "Zanjabil", var(--font-tajawal), var(--font-plex), "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700; --fw-extrabold: 800;
+
+  /* ── الأسطح: مسطّحة، تتمايز بالمسافة لا بالحدود ── */
+  --c-fog: 247 248 250;          /* الخلفية #F7F8FA */
+  --c-snow: 255 255 255;         /* الأسطح */
+  --c-mist: 241 242 245;         /* الأسطح الثانوية */
+  --c-line: 224 225 229;         /* فاصل شعري عند الحاجة فقط */
+  --c-line-soft: 237 238 242;
+
+  /* ── الحبر ── */
+  --c-ink: 18 20 24;             /* #121418 */
+  --c-ink-2: 62 66 76;
+  --c-ink-3: 108 114 128;
+  --c-ash: 158 162 172;
+
+  /* ── الهوية: أحمر خيال #CC1728 ── */
+  --brand: 204 23 40;            /* #CC1728 */
+  --brand-lo: 160 14 30;
+  --brand-hi: 226 66 78;
+  --brand-ink: 176 20 36;
+  --brand-tint: 253 233 235;     /* #FDE9EB */
+  --on-brand: 255 255 255;
+
+  /* ── ثانوي محايد: أُلغِيت الدرجات البنفسجية والوردية ── */
+  --secondary: 108 114 128;
+  --secondary-tint: 241 242 245;
+  --tertiary: 176 20 36;
+
+  /* ── الحالات الدلالية ── */
+  --ok: 22 138 74;       --ok-ink: 15 110 58;     --ok-tint: 231 246 238;
+  --gold: 205 145 24;    --gold-ink: 148 96 4;    --gold-tint: 253 245 226;
+  --info: 30 112 214;    --info-ink: 20 88 176;   --info-tint: 230 240 253;
+  --danger: 179 38 30;   --danger-tint: 252 237 235;
+
+  --glass: 255 255 255;
+  --glass-a: .86;
+
+  /* ── الارتفاع: ظل محايد للارتفاع فقط، بلا ألوان ولا توهّج ──
+     elev-0 سطح مستقر · elev-1 مرتفع قليلاً · elev-2 عائم · elev-3 نافذة/قائمة */
+  --elev-0: none;
+  --elev-1: 0 1px 2px rgb(16 20 30 / .05);
+  --elev-2: 0 4px 14px -6px rgb(16 20 30 / .10);
+  --elev-3: 0 16px 40px -16px rgb(16 20 30 / .20);
+  --sh-1: var(--elev-1);
+  --sh-2: var(--elev-2);
+  --sh-pop: var(--elev-3);
+  --float: var(--elev-3);
+
+  /* ── الأشكال ── */
+  --r-xs: 6px; --r-sm: 8px; --r: 12px; --r-md: 12px; --r-lg: 16px;
+  --r-xl: 20px; --r-2xl: 24px; --r-3xl: 28px; --r-full: 9999px;
+  --r-button: 9999px; --r-input: 14px; --r-card: 20px; --r-sheet: 24px; --r-media: 16px;
+
+  /* ── المسافات: مضاعفات 4 ── */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px;
+  --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px; --sp-16: 64px;
+  --sp-card: 16px; --sp-card-lg: 20px; --sp-card-xl: 24px;
+
+  /* ── سلّم الطباعة العربية: أسطر أطول من اللاتينية لاستيعاب التشكيل ── */
+  --fs-micro: 11px; --fs-caption: 12px; --fs-sm: 13px; --fs-base: 15px;
+  --fs-lg: 17px; --fs-xl: 20px; --fs-2xl: 24px; --fs-3xl: 32px;
+  --lh-tight: 1.25; --lh-snug: 1.4; --lh-normal: 1.6; --lh-relaxed: 1.8;
+  --ls-tight: -0.01em; --ls-normal: 0; --ls-wide: .01em;
+
+  /* ── الحركة: تباطؤ عند الظهور، زنبرك عند اللمس ── */
+  --dur-instant: 80ms; --dur-fast: 150ms; --dur-base: 220ms; --dur-slow: 320ms; --dur-slower: 480ms;
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);   /* تباطؤ هادئ */
+  --ease-out: cubic-bezier(0, 0, .2, 1);        /* خروج */
+  --ease-in: cubic-bezier(.4, 0, 1, 1);         /* دخول */
+  --ease-emphasis: cubic-bezier(.2, 0, 0, 1);
+  --spring-gentle: cubic-bezier(.34, 1.28, .46, 1);  /* زنبرك ناعم */
+  --spring-snappy: cubic-bezier(.2, 1.4, .32, 1);    /* زنبرك سريع */
+  /* أسماء قديمة (توافق) */
+  --t-fast: var(--dur-fast); --t: var(--dur-base); --t-slow: var(--dur-slow);
+  --ease: var(--ease-standard); --spring: var(--spring-gentle);
+
+  /* ── التركيز ── */
+  --ring: rgb(204 23 40 / .55);
+  --ring-offset: rgb(var(--c-fog));
+
+  /* ── فرشاة الشعار المصغّرة ── */
+  --logo-ink: var(--brand);
+  --logo-muted: var(--c-ash);
+  --logo-ok: var(--ok);
+  --logo-warn: var(--gold);
+  --logo-error: var(--danger);
+
+  /* ── الطبقات ── */
+  --z-base: 0; --z-sticky: 20; --z-header: 50; --z-overlay: 90; --z-modal: 100; --z-toast: 120; --z-splash: 200;
+
+  /* ── التخطيط ── */
+  --top: 64px;
+  --bottom: 72px;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --c-fog: 18 18 18;             /* #121212 */
+  --c-snow: 26 27 31;
+  --c-mist: 36 38 44;
+  --c-line: 58 61 71;
+  --c-line-soft: 44 46 54;
+
+  --c-ink: 238 240 245;
+  --c-ink-2: 200 205 216;
+  --c-ink-3: 152 160 176;
+  --c-ash: 118 124 138;
+
+  --brand: 214 40 54;
+  --brand-lo: 176 31 44;
+  --brand-hi: 240 110 118;
+  --brand-ink: 255 138 146;
+  --brand-tint: 60 22 27;
+  --on-brand: 255 255 255;
+
+  --secondary: 152 160 176;
+  --secondary-tint: 36 38 44;
+  --tertiary: 255 138 146;
+
+  --ok: 129 199 132;    --ok-ink: 165 214 167;   --ok-tint: 30 46 33;
+  --gold: 255 202 120;  --gold-ink: 255 222 170; --gold-tint: 58 45 26;
+  --info: 144 202 249;  --info-ink: 187 222 251; --info-tint: 27 45 62;
+  --danger: 242 184 181; --danger-tint: 60 35 35;
+
+  --glass: 30 31 36;
+  --glass-a: .92;
+
+  --elev-1: 0 1px 2px rgb(0 0 0 / .5);
+  --elev-2: 0 4px 14px -6px rgb(0 0 0 / .55);
+  --elev-3: 0 18px 44px -18px rgb(0 0 0 / .7);
+
+  --ring: rgb(240 110 118 / .7);
+  --ring-offset: rgb(var(--c-fog));
+}
+
+/* ── تقليل الحركة: تُصفَّر كل المدد فيسكن النظام تلقائياً ── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0ms; --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; --dur-slower: 0ms;
+  }
+}
+
+/* ── الشعار: بلا إطار أو خلفية، وتُحفظ نسبته ── */
+.logo-brush { display: inline-grid; place-items: center; background: transparent; }
+.logo-brush img { object-fit: contain; display: block; }
