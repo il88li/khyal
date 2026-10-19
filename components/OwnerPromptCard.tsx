@@ -103,7 +103,7 @@ export default function OwnerPromptCard({
       dragConstraints={{ top: 0, bottom: 0 }}
       dragElastic={0.22}
       onDragStart={() => { dragged.current = true; }}
-      onDragEnd={(e, i) => { onDragEnd(e, i as { offset: { y: number } }); window.setTimeout(() => { dragged.current = false; }, 0); }}
+      onDragEnd={(e, i) => { onDragEnd(e, i); window.setTimeout(() => { dragged.current = false; }, 0); }}
       className="card owner-card"
     >
       <div className="owner-card-media aspect-[4/5]">

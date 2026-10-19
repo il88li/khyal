@@ -19,7 +19,7 @@ function Tile({ p, i, onOpen }: { p: PromptRow; i: number; onOpen: (p: PromptRow
   const im = p.images?.[0], text = (p.enhanced || p.body || "").trim(), name = p.author?.display_name ?? p.author?.username ?? "";
   return (
     <motion.article initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 8) * 0.04, type: "spring", stiffness: 260, damping: 26 }}
-      className="search-tile group overflow-hidden rounded-xl border border-silver bg-snow transition-shadow">
+      className={`search-tile group overflow-hidden rounded-xl border border-silver bg-snow transition-shadow${i === 0 ? " featured" : ""}`}>
       {im ? (
         <button onClick={() => onOpen(p)} aria-label="معاينة الصورة" className="block w-full">
           <img src={thumb(im.url, 800)} alt="" loading="lazy" width={im.w} height={im.h} className="w-full object-cover" style={im.w && im.h ? { aspectRatio: `${im.w}/${im.h}` } : undefined} />

@@ -227,49 +227,32 @@ export default function Profile() {
           {own && <button data-on={tab === "saved" ? "1" : undefined} onClick={() => setTab("saved")}>المحفوظة</button>}
         </div>)}
 
-      {/*9 — الشبكة: عمودان بزوايا دائرية (طراز الصورة) */}
+      {/*9 — منشوراتي: رزمة بطاقات تتوسّع بالسحب (للمالك) · الزوّار: شبكة عمودين */}
       {hidden ? <EmptyState icon={Lock} title="هذا الحساب خاص" hint="تابعه لترى منشوراته." />
         : !ready ? <Skeleton variant="grid" count={6} className="pt-4" />
         : !list.length ? <EmptyState title="لا شيء هنا بعد" hint={own ? "انشر أول برومبت ليظهر هنا." : undefined} action={own ? { label: "برومبت جديد", href: "/new" } : undefined} />
-        : <div className="grid grid-cols-2 gap-4 pt-4">{list.map((c) => (
-          <Tile key={c.id} c={c} onOpen={() => openPreview(c)}>
-            {own && tab === "posts" && (
-              <span className="absolute end-2 top-2 z-10 flex gap-1">
-                <button onClick={(e) => { e.stopPropagation(); e.preventDefault(); openEdit(c); }} aria-label="تعديل البرومبت" title="تعديل" className="flex h-8 w-8 items-center justify-center rounded-full bg-snow/95 text-charcoal shadow-soft active:scale-90">
-                  <Pencil size={15} />
-                </button>
-                <button onClick={(e) => { e.stopPropagation(); e.preventDefault(); removePrompt(c); }} aria-label="حذف البرومبت" title="حذف" disabled={busy === `del:${c.id}`} className="flex h-8 w-8 items-center justify-center rounded-full bg-snow/95 text-danger shadow-soft active:scale-90 disabled:opacity-60">
-                  <Trash2 size={15} />
-                </button>
-              </span>
-            )}
-            {c.images?.[0]
-              ? <>
-                  <img src={thumb(c.images[0].url, 400)} alt="" loading="lazy" className="h-full w-full object-cover" />
-                  {!!c.like_count && <span className="on-media absolute bottom-2 end-2 flex items-center gap-1 text-micro font-semibold text-white"><Heart size={16} fill="currentColor" />{c.like_count}</span>}
-                </>
-              : <PromptCover variant="tile" text={c.enhanced ?? c.body} />}
-          </Tile>))}</div>}
-      {pv && <ImagePreview p={pv} start={0} onClose={() => setPv(null)} />}
-
-      {/* تعديل برومبت: نفس أسلوب البطاقة — نصّ + الإصدارات السابقة */}
-      <BottomSheet compact open={!!editCell} onClose={() => setEditCell(null)} title="تعديل البرومبت">
-        <textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={6} className="field min-h-[120px] w-full resize-none py-2" />
-        {vers.length > 0 && (
-          <div className="mt-2 flex flex-col gap-1.5">
-            <p className="text-caption text-smoke">الإصدارات السابقة — اضغط للاسترجاع</p>
-            {vers.map((x) => (
-              <button key={x.id} onClick={() => setDraft(x.enhanced ?? x.body)} className="card-flat flex flex-col gap-0.5 p-2 text-start">
-                <span className="text-caption text-smoke">{ago(x.created_at)}</span>
-                <span className="line-clamp-2 text-caption">{x.enhanced ?? x.body}</span>
-              </button>
-            ))}
-          </div>
+        : own && tab === "posts" ? (
+          /* المالك: بطاقة تتوسّع بالسحب بلا نافذة منبثقة — التعديل والحذف داخل المكان */
+          <div className="flex flex-col gap-4 pt-4">{list.map((c) => (
+            <OwnerPromptCard
+              key={c.id}
+              c={c}
+              onSaved={(id, patch) => { setCells((l) => l.map((x) => (x.id === id ? { ...x, ...patch } : x))); (window as any).__feedDirty = true; }}
+              onRemoved={(id) => { setCells((l) => l.filter((x) => x.id !== id)); setStats((s) => ({ ...s, prompts: Math.max(0, s.prompts - 1) })); (window as any).__feedDirty = true; }}
+            />
+          ))}</div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 pt-4">{list.map((c) => (
+            <Tile key={c.id} c={c} onOpen={() => openPreview(c)}>
+              {c.images?.[0]
+                ? <>
+                    <img src={thumb(c.images[0].url, 400)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                    {!!c.like_count && <span className="on-media absolute bottom-2 end-2 flex items-center gap-1 text-micro font-semibold text-white"><Heart size={16} fill="currentColor" />{c.like_count}</span>}
+                  </>
+                : <PromptCover variant="tile" text={c.enhanced ?? c.body} />}
+            </Tile>))}</div>
         )}
-        <button onClick={saveEdit} disabled={!draft.trim() || busy === "edit"} className="btn btn-primary mt-2 !min-h-10 w-full disabled:opacity-50">
-          {busy === "edit" ? "جارٍ الحفظ…" : "حفظ التعديل"}
-        </button>
-      </BottomSheet>
+      {pv && <ImagePreview p={pv} start={0} onClose={() => setPv(null)} />}
     </main>
   );
 }

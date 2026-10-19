@@ -69,7 +69,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         )}
 
         {p.images?.length ? (
-          <div className="prompt-card-media"><Gallery images={p.images} /></div>
+          <div className="prompt-card-media">
+            <Gallery images={p.images} />
+            {/* طبقة العنوان نفسها المستعملة في بطاقة الخلاصة — العنوان يعلو حافّة الوسائط */}
+            {p.title && <p className="prompt-media-title">{p.title}</p>}
+          </div>
         ) : (
           <div className="prompt-card-media prompt-card-media--cover"><PromptCover title={p.title} text={p.body} author={name} /></div>
         )}
@@ -79,7 +83,6 @@ export default async function Page({ params }: { params: { id: string } }) {
         )}
 
         <div className="prompt-card-copy-wrap">
-          {p.title && <p className="text-lg font-bold text-charcoal">{p.title}</p>}
           <GatedPrompt text={text} ownerId={p.author?.id} locked={p.locked} hidden={p.hidden} />
         </div>
       </article>

@@ -8,6 +8,22 @@ import { EmptyState, Skeleton } from "@/components/states";
 import { sb, uid, ago } from "@/lib/supabase";
 
 type N = { id: string; title: string; body: string; link: string | null; read: boolean; created_at: string };
+
+/** تجميع زمني خفيف (اليوم · أمس · أقدم) — بلا حدود، بالمسافة والعنوان فقط */
+const DAY = 86_400_000;
+function groupByDay(items: N[]) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const t0 = today.getTime(), y0 = t0 - DAY;
+  const buckets: { label: string; list: N[] }[] = [
+    { label: "اليوم", list: [] }, { label: "أمس", list: [] }, { label: "أقدم", list: [] },
+  ];
+  for (const n of items) {
+    const t = new Date(n.created_at).getTime();
+    (t >= t0 ? buckets[0] : t >= y0 ? buckets[1] : buckets[2]).list.push(n);
+  }
+  return buckets.filter((b) => b.list.length);
+}
+
 export default function Notifications() {
   const r = useRouter(), [items, setItems] = useState<N[] | null>(null);
   useEffect(() => {
@@ -28,10 +44,17 @@ export default function Notifications() {
         {items?.some((n) => !n.read) && <button onClick={readAll} className="btn btn-soft">قراءة الكل</button>}</header>
       {!items ? <Skeleton variant="list" count={5} />
         : !items.length ? <EmptyState icon={Bell} title="لا توجد إشعارات" hint="ستظهر هنا الإعجابات والمتابعات والتعليقات." />
-        : items.map((n) => (
-          <button key={n.id} onClick={() => open(n)} className={`flex min-h-[76px] flex-col gap-1 rounded-xl border p-4 text-start active:opacity-70 ${n.read ? "border-silver bg-snow" : "border-brand/40 bg-brand-tint"}`}>
-            <span className="flex items-center justify-between gap-2"><span className="text-sm font-medium">{n.title}</span><span className="shrink-0 text-caption text-smoke">{ago(n.created_at)}</span></span>
-            <span className="truncate text-sm text-graphite">{n.body}</span></button>))}
+        : groupByDay(items).map((g) => (
+          <section key={g.label} className="notif-group">
+            <h2>{g.label}</h2>
+            {g.list.map((n) => (
+              <button key={n.id} onClick={() => open(n)} className={`flex min-h-[76px] flex-col gap-1 rounded-xl border p-4 text-start active:opacity-70 ${n.read ? "border-silver bg-snow" : "border-brand/40 bg-brand-tint"}`}>
+                <span className="flex items-center justify-between gap-2"><span className="text-sm font-medium">{n.title}</span><span className="shrink-0 text-caption text-smoke">{ago(n.created_at)}</span></span>
+                <span className="truncate text-sm text-graphite">{n.body}</span>
+              </button>
+            ))}
+          </section>
+        ))}
     </main>
   );
 }
